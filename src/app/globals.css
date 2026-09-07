@@ -13,8 +13,10 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.04) 0px, transparent 50%),
-                    radial-gradient(at 100% 100%, rgba(13, 148, 136, 0.04) 0px, transparent 50%);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.04) 0px, transparent 40%),
+    radial-gradient(at 50% 100%, rgba(13, 148, 136, 0.04) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
@@ -34,25 +36,26 @@ body {
   background: #94a3b8;
 }
 
-/* Glassmorphic card utility */
+/* Glassmorphism utilities */
 .glass-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
 }
 
 .glass-dark {
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: rgba(15, 23, 42, 0.94);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(51, 65, 85, 0.6);
 }
 
 /* Dynamic voice equalizer bars */
 @keyframes waveDynamic1 {
   0%, 100% { height: 6px; }
-  50% { height: 28px; }
+  50% { height: 26px; }
 }
 @keyframes waveDynamic2 {
   0%, 100% { height: 10px; }
@@ -60,19 +63,54 @@ body {
 }
 @keyframes waveDynamic3 {
   0%, 100% { height: 4px; }
-  50% { height: 22px; }
+  50% { height: 20px; }
+}
+@keyframes waveDynamic4 {
+  0%, 100% { height: 12px; }
+  50% { height: 32px; }
+}
+@keyframes waveDynamic5 {
+  0%, 100% { height: 5px; }
+  50% { height: 24px; }
 }
 
-.wave-bar-1 { animation: waveDynamic1 0.9s ease-in-out infinite; }
-.wave-bar-2 { animation: waveDynamic2 0.75s ease-in-out infinite; }
-.wave-bar-3 { animation: waveDynamic3 1.1s ease-in-out infinite; }
+.wave-bar-1 { animation: waveDynamic1 0.85s ease-in-out infinite; }
+.wave-bar-2 { animation: waveDynamic2 0.7s ease-in-out infinite; }
+.wave-bar-3 { animation: waveDynamic3 1.05s ease-in-out infinite; }
+.wave-bar-4 { animation: waveDynamic4 0.9s ease-in-out infinite; }
+.wave-bar-5 { animation: waveDynamic5 0.75s ease-in-out infinite; }
 
 /* Pulsing radar ring */
 @keyframes ringPulse {
   0% { transform: scale(0.95); opacity: 0.8; }
-  50% { transform: scale(1.15); opacity: 0.2; }
+  50% { transform: scale(1.18); opacity: 0.15; }
   100% { transform: scale(0.95); opacity: 0.8; }
 }
 .ring-pulse {
-  animation: ringPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: ringPulse 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Subtle Shimmer for interactive elements */
+@keyframes shimmerSweep {
+  100% { transform: translateX(100%); }
+}
+.shimmer-badge {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-badge::after {
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.25) 20%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0));
+  animation: shimmerSweep 2.5s infinite;
+  content: '';
+}
+
+/* Phone Bezel Glare */
+.phone-bezel {
+  box-shadow: 
+    0 0 0 10px #0f172a,
+    0 0 0 12px #334155,
+    0 25px 60px -15px rgba(15, 23, 42, 0.35);
 }

@@ -39,17 +39,17 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
     <div className="max-w-4xl mx-auto space-y-6">
       
       {/* Header */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="glass-card rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2.5 py-1 bg-slate-100 text-slate-700 rounded-full border border-slate-200">
+            <span className="text-xs font-bold px-3 py-1 bg-slate-100 text-slate-700 rounded-full border border-slate-200">
               System Architecture & Configuration
             </span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mt-1">
+          <h2 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
             Integrations & Service Settings
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5">
             Current status of AI reasoning, voice models, database persistence, and Google Calendar tool calling.
           </p>
         </div>

@@ -56,6 +56,20 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
   const [callerPhone, setCallerPhone] = useState("+1 (555) 438-9201");
   const [apiNotice, setApiNotice] = useState<string | null>(null);
 
+  // Preset caller test identities for quick evaluation
+  const CALLER_PRESETS = [
+    { name: "Eleanor Vance", phone: "+1 (555) 438-9201", label: "Eleanor (Clinic Patient)", lang: "en" as const },
+    { name: "Marcus Lee", phone: "+1 (555) 729-1144", label: "Marcus (Urgent Cake Order)", lang: "en" as const },
+    { name: "Aarav Gupta", phone: "+91 98765 43210", label: "Aarav Gupta (हिन्दी Caller)", lang: "hi" as const },
+  ];
+
+  const selectPreset = (preset: typeof CALLER_PRESETS[0]) => {
+    if (callState === "connected" || callState === "calling") return;
+    setCallerName(preset.name);
+    setCallerPhone(preset.phone);
+    setSelectedLanguage(preset.lang);
+  };
+
   // References
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
@@ -304,48 +318,74 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
       <audio ref={audioElementRef} className="hidden" />
 
       {/* Top Banner with Human Design Touches */}
-      <div className="glass-card rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-bold px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-xs">
-              {business.industry}
-            </span>
-            <span className="text-xs text-slate-500 font-medium">
-              Active Workflow: <strong className="text-slate-800">{activeWorkflow?.name || "Standard Callback"}</strong>
-            </span>
+      <div className="glass-card rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-xs">
+                {business.industry}
+              </span>
+              <span className="text-xs text-slate-500 font-medium">
+                Active Workflow: <strong className="text-slate-800">{activeWorkflow?.name || "Standard Callback"}</strong>
+              </span>
+            </div>
+            <h2 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
+              Autonomous Voice Callback Simulator
+            </h2>
+            <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
+              Experience the automated missed-call callback as a customer. Speech processed via <strong className="text-slate-700">Deepgram Nova-2 (STT)</strong>, reasoned with <strong className="text-slate-700">Gemini 1.5 Tool Calling</strong>, and spoken via <strong className="text-slate-700">Deepgram Aura (TTS)</strong>.
+            </p>
           </div>
-          <h2 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
-            Autonomous Voice Callback Simulator
-          </h2>
-          <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
-            Experience the automated missed-call callback as a customer. Speech processed via <strong className="text-slate-700">Deepgram Nova-2 (STT)</strong>, reasoned with <strong className="text-slate-700">Gemini 1.5 Tool Calling</strong>, and spoken via <strong className="text-slate-700">Deepgram Aura (TTS)</strong>.
-          </p>
+
+          {/* Language Selector Pill */}
+          <div className="flex items-center gap-2 w-full sm:w-auto self-start sm:self-center">
+            <div className="flex items-center gap-1.5 bg-slate-100/90 px-3 py-1.5 rounded-2xl border border-slate-200 text-xs font-semibold">
+              <Languages className="w-3.5 h-3.5 text-blue-600" />
+              <select
+                value={selectedLanguage}
+                onChange={(e) => setSelectedLanguage(e.target.value as any)}
+                className="bg-transparent border-none outline-none text-slate-800 font-semibold cursor-pointer"
+              >
+                <option value="en">🇺🇸 English</option>
+                <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+                <option value="auto">✨ Auto-Detect</option>
+              </select>
+            </div>
+
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className={`p-2.5 rounded-2xl border text-xs font-semibold flex items-center gap-1 transition ${
+                isMuted ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
+              }`}
+              title={isMuted ? "Audio Unmute" : "Audio Mute"}
+            >
+              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
 
-        {/* Language Selector Pill */}
-        <div className="flex items-center gap-2 w-full sm:w-auto self-start sm:self-center">
-          <div className="flex items-center gap-1.5 bg-slate-100/90 px-3 py-1.5 rounded-2xl border border-slate-200 text-xs font-semibold">
-            <Languages className="w-3.5 h-3.5 text-blue-600" />
-            <select
-              value={selectedLanguage}
-              onChange={(e) => setSelectedLanguage(e.target.value as any)}
-              className="bg-transparent border-none outline-none text-slate-800 font-semibold cursor-pointer"
-            >
-              <option value="en">🇺🇸 English</option>
-              <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
-              <option value="auto">✨ Auto-Detect</option>
-            </select>
-          </div>
-
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className={`p-2.5 rounded-2xl border text-xs font-semibold flex items-center gap-1 transition ${
-              isMuted ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
-            }`}
-            title={isMuted ? "Audio Unmute" : "Audio Mute"}
-          >
-            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-          </button>
+        {/* Quick Caller Persona Switcher Pills */}
+        <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 mr-1 flex items-center gap-1">
+            <User className="w-3.5 h-3.5" /> Caller Identity:
+          </span>
+          {CALLER_PRESETS.map((preset) => {
+            const isSelected = callerName === preset.name;
+            return (
+              <button
+                key={preset.name}
+                onClick={() => selectPreset(preset)}
+                disabled={callState === "connected" || callState === "calling"}
+                className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition border ${
+                  isSelected
+                    ? "bg-blue-50 text-blue-700 border-blue-300 font-bold shadow-2xs"
+                    : "bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200"
+                } disabled:opacity-50`}
+              >
+                {preset.label}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -360,31 +400,60 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
       )}
 
       {/* Main Smartphone Telephony Console */}
-      <div className="bg-white rounded-[2rem] border border-slate-200/90 shadow-2xl overflow-hidden ring-1 ring-black/5">
+      <div className="bg-white rounded-[2.5rem] border border-slate-800/20 shadow-2xl overflow-hidden ring-1 ring-black/5 phone-bezel">
         
         {/* Smartphone Hardware Style Top Status Bar */}
-        <div className="bg-slate-950 px-6 py-2.5 flex items-center justify-between text-slate-400 text-[11px] font-mono select-none">
+        <div className="bg-slate-950 px-6 pt-3 pb-2 flex items-center justify-between text-slate-400 text-[11px] font-mono select-none">
           <div className="flex items-center gap-2">
             <Signal className="w-3.5 h-3.5 text-slate-300" />
             <span className="font-sans font-semibold text-slate-300">Invyra Telecom</span>
             <span>&bull;</span>
             <span className="text-[10px] bg-blue-900/60 text-blue-300 px-1.5 py-0.2 rounded font-sans font-bold">5G Ultra</span>
           </div>
+
+          {/* Center Dynamic Island Pill */}
+          <div className="hidden sm:flex items-center gap-2 px-3.5 py-1 bg-slate-900 rounded-full border border-slate-800 text-[11px] text-slate-300 shadow-inner">
+            {callState === "connected" ? (
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-emerald-400 font-mono font-bold">{formatTime(callDuration)}</span>
+                <span className="text-slate-500">&bull;</span>
+                <span className="truncate max-w-[110px] font-sans font-medium text-slate-200">{business.name}</span>
+              </div>
+            ) : callState === "calling" ? (
+              <div className="flex items-center gap-1.5 text-amber-300 font-sans">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                <span>Connecting Outbound...</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1.5 text-slate-400 font-sans">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400"></span>
+                <span>Invyra Standby</span>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center gap-2.5">
             <Wifi className="w-3.5 h-3.5 text-slate-300" />
             <span className="font-sans font-semibold text-slate-200">{new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
-            <Battery className="w-4 h-4 text-emerald-400" />
+            <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-sans">
+              <span>98%</span>
+              <Battery className="w-4 h-4 text-emerald-400" />
+            </div>
           </div>
         </div>
 
         {/* Call Management Bar */}
         <div className="bg-slate-900 text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800">
           <div className="flex items-center gap-3.5">
-            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-white shadow-md ${
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-white shadow-md transition-all ${
               callState === "connected"
-                ? "bg-gradient-to-tr from-emerald-600 to-teal-500 shadow-emerald-500/20 ring-4 ring-emerald-500/20"
+                ? "bg-gradient-to-tr from-emerald-600 to-teal-500 shadow-emerald-500/25 ring-4 ring-emerald-500/20"
                 : callState === "calling"
-                ? "bg-gradient-to-tr from-amber-500 to-yellow-400 shadow-amber-500/20 animate-pulse"
+                ? "bg-gradient-to-tr from-amber-500 to-yellow-400 shadow-amber-500/25 animate-pulse"
                 : "bg-slate-800 text-slate-400"
             }`}>
               {callState === "connected" ? <PhoneCall className="w-5 h-5 animate-pulse" /> : <PhoneForwarded className="w-5 h-5" />}
@@ -400,7 +469,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
                 )}
               </div>
               <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5 font-medium">
-                <span>Caller: {callerName}</span>
+                <span>Caller: <strong className="text-slate-200">{callerName}</strong></span>
                 <span>&bull;</span>
                 <span className="font-mono text-slate-300">{callerPhone}</span>
               </div>
@@ -438,8 +507,8 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
                   <div className="w-1.5 h-6 bg-teal-400 rounded-full wave-bar-1" />
                   <div className="w-1.5 h-8 bg-blue-400 rounded-full wave-bar-2" />
                   <div className="w-1.5 h-5 bg-indigo-400 rounded-full wave-bar-3" />
-                  <div className="w-1.5 h-7 bg-purple-400 rounded-full wave-bar-2" />
-                  <div className="w-1.5 h-4 bg-teal-300 rounded-full wave-bar-1" />
+                  <div className="w-1.5 h-7 bg-purple-400 rounded-full wave-bar-4" />
+                  <div className="w-1.5 h-4 bg-teal-300 rounded-full wave-bar-5" />
                   <span className="text-xs text-teal-300 font-semibold ml-2 flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5 animate-pulse" />
                     Deepgram Aura Speaking...
@@ -450,6 +519,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
                   <div className="w-1.5 h-6 bg-rose-400 rounded-full wave-bar-1" />
                   <div className="w-1.5 h-8 bg-amber-400 rounded-full wave-bar-2" />
                   <div className="w-1.5 h-5 bg-red-400 rounded-full wave-bar-3" />
+                  <div className="w-1.5 h-7 bg-rose-500 rounded-full wave-bar-4" />
                   <span className="text-xs text-rose-300 font-semibold ml-2 flex items-center gap-1">
                     <Mic className="w-3.5 h-3.5 animate-pulse" />
                     Listening to your microphone...

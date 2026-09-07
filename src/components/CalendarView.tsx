@@ -60,23 +60,23 @@ export function CalendarView() {
     <div className="max-w-5xl mx-auto space-y-6">
       
       {/* Top Banner */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="glass-card rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2.5 py-1 bg-blue-50 text-blue-700 rounded-full border border-blue-200 flex items-center gap-1">
+            <span className="text-xs font-bold px-3 py-1 bg-blue-100/80 text-blue-800 rounded-full border border-blue-200 flex items-center gap-1.5">
               <CalendarIcon className="w-3.5 h-3.5" />
               Google Calendar Synchronization
             </span>
             <span className="text-xs text-slate-500 font-medium">
-              Mode: <strong className={isGoogleConfigured ? "text-emerald-700" : "text-blue-700"}>
+              Mode: <strong className={isGoogleConfigured ? "text-emerald-700 font-bold" : "text-blue-700 font-bold"}>
                 {isGoogleConfigured ? "Live Google Calendar API Connected" : "Local / Supabase Synchronized"}
               </strong>
             </span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mt-1">
+          <h2 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
             Appointment Agenda & Calendar Events
           </h2>
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-slate-500 mt-0.5">
             Appointments created, rescheduled, or cancelled automatically by Gemini AI during missed-call callbacks.
           </p>
         </div>
@@ -84,14 +84,14 @@ export function CalendarView() {
         <div className="flex items-center gap-2">
           <button
             onClick={handleQuickAvailabilityCheck}
-            className="flex items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-semibold transition"
+            className="flex items-center gap-1.5 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-xl text-xs font-bold transition active:scale-95 border border-indigo-200/70"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Test Availability Tool
           </button>
           <button
             onClick={fetchEvents}
-            className="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-semibold transition"
+            className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition active:scale-95"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             Refresh

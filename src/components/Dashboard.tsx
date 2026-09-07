@@ -59,6 +59,16 @@ export function Dashboard({ business, conversations, onRefresh }: DashboardProps
     (c) => c.business_id === business.id && (c.follow_up_status === "completed" || c.follow_up_status === "closed")
   ).length;
 
+  // Filter Tab Badges
+  const relevantConvs = conversations.filter((c) => c.business_id === business.id || !c.business_id);
+  const statusCounts: Record<string, number> = {
+    all: relevantConvs.length,
+    pending: relevantConvs.filter((c) => c.follow_up_status === "pending").length,
+    contacted: relevantConvs.filter((c) => c.follow_up_status === "contacted").length,
+    completed: relevantConvs.filter((c) => c.follow_up_status === "completed").length,
+    closed: relevantConvs.filter((c) => c.follow_up_status === "closed").length,
+  };
+
   const handleUpdateStatus = async (recordId: string, newStatus: "pending" | "contacted" | "completed" | "closed") => {
     setIsUpdatingStatus(true);
     try {
@@ -186,19 +196,28 @@ export function Dashboard({ business, conversations, onRefresh }: DashboardProps
         </div>
 
         <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto">
-          {["all", "pending", "contacted", "completed", "closed"].map((st) => (
-            <button
-              key={st}
-              onClick={() => setFilterStatus(st)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold capitalize transition whitespace-nowrap ${
-                filterStatus === st
-                  ? "bg-slate-900 text-white shadow-xs"
-                  : "bg-slate-100 text-slate-600 hover:bg-slate-200/80"
-              }`}
-            >
-              {st}
-            </button>
-          ))}
+          {(["all", "pending", "contacted", "completed", "closed"] as const).map((st) => {
+            const count = statusCounts[st] || 0;
+            const isSelected = filterStatus === st;
+            return (
+              <button
+                key={st}
+                onClick={() => setFilterStatus(st)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold capitalize transition whitespace-nowrap ${
+                  isSelected
+                    ? "bg-slate-900 text-white shadow-xs"
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200/80"
+                }`}
+              >
+                <span>{st}</span>
+                <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
+                  isSelected ? "bg-slate-800 text-slate-200" : "bg-slate-200 text-slate-600"
+                }`}>
+                  {count}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

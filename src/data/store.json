@@ -238,6 +238,176 @@
         {
           "role": "user",
           "message": "I need a 2kg Belgian chocolate truffle cake for a birthday today evening",
+          "timestamp": "10:03:18 am"
+        },
+        {
+          "role": "assistant",
+          "message": "Delightful! I have recorded your order for a 2 kg Belgian Chocolate Truffle cake. Since it is needed within 24 hours, our kitchen team has marked it as URGENT priority!",
+          "timestamp": "10:03:18 am"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788755598592",
+      "created_at": "2026-09-07T04:33:18.592Z",
+      "updated_at": "2026-09-07T04:33:18.837Z"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "workflow_id": "wf-clinic-booking",
+      "business_name": "Apex Care Multi-Specialty Clinic",
+      "workflow_name": "Clinic Missed Call - Appointment Booking & Rescheduling",
+      "caller_name": "Aarav Gupta",
+      "caller_phone": "+1 (555) 987-6543",
+      "status": "completed",
+      "intent": "Schedule medical consultation with Dr. Sharma",
+      "collected_data": {
+        "caller_phone": "+1 (555) 987-6543",
+        "caller_name": "Aarav Gupta",
+        "doctor_specialty": "Cardiology",
+        "preferred_date": "Tomorrow",
+        "preferred_time": "16:00"
+      },
+      "summary": "Aarav Gupta contacted Apex Care Multi-Specialty Clinic regarding: Schedule medical consultation with Dr. Sharma. Result: Google Calendar Event Booked: Tomorrow at 4:00 PM.",
+      "action_performed": "Google Calendar Event Booked: Tomorrow at 4:00 PM",
+      "priority": "normal",
+      "follow_up_status": "contacted",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hello! This is Apex Care Medical Centre calling you back after missing your call. Are you calling to book a new appointment, reschedule, or inquire about clinic hours?",
+          "timestamp": "10:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I want to schedule an appointment with Dr. Sharma tomorrow at 4 PM",
+          "timestamp": "10:03:18 am"
+        },
+        {
+          "role": "assistant",
+          "message": "Wonderful! I have verified availability and booked your appointment with Dr. Sharma for tomorrow at 4:00 PM on our Google Calendar. An SMS confirmation is on its way.",
+          "timestamp": "10:03:18 am"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788755598554",
+      "created_at": "2026-09-07T04:33:18.554Z",
+      "updated_at": "2026-09-07T04:33:18.554Z"
+    },
+    {
+      "business_id": "b-bakery-002",
+      "workflow_id": "wf-cake-order",
+      "business_name": "Sweet Delights Artisan Cake Studio",
+      "workflow_name": "Cake Studio Missed Call - Custom Order & Inquiry",
+      "caller_name": "Priya Sengupta",
+      "caller_phone": "+1 (555) 345-6789",
+      "status": "completed",
+      "intent": "Custom Belgian Chocolate Truffle cake order inquiry",
+      "collected_data": {
+        "caller_phone": "+1 (555) 345-6789",
+        "caller_name": "Priya Sengupta",
+        "cake_type": "Birthday",
+        "flavor": "Belgian Chocolate Truffle",
+        "weight_kg": "2 kg",
+        "fulfillment_type": "Store Pickup"
+      },
+      "summary": "Priya Sengupta contacted Sweet Delights Artisan Cake Studio regarding: Custom Belgian Chocolate Truffle cake order inquiry. Result: Urgent Kitchen Notification & Order Enquiry Logged.",
+      "action_performed": "Urgent Kitchen Notification & Order Enquiry Logged",
+      "priority": "urgent",
+      "follow_up_status": "completed",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hi there! This is Sweet Delights Cake Studio returning your call. Are you interested in placing a custom cake order, or did you have a quick question about our menu?",
+          "timestamp": "11:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I need a 2kg Belgian chocolate truffle cake for a birthday today evening",
+          "timestamp": "09:57:29 am"
+        },
+        {
+          "role": "assistant",
+          "message": "Delightful! I have recorded your order for a 2 kg Belgian Chocolate Truffle cake. Since it is needed within 24 hours, our kitchen team has marked it as URGENT priority!",
+          "timestamp": "09:57:29 am"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788755249453",
+      "created_at": "2026-09-07T04:27:29.453Z",
+      "updated_at": "2026-09-07T04:27:29.850Z"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "workflow_id": "wf-clinic-booking",
+      "business_name": "Apex Care Multi-Specialty Clinic",
+      "workflow_name": "Clinic Missed Call - Appointment Booking & Rescheduling",
+      "caller_name": "Aarav Gupta",
+      "caller_phone": "+1 (555) 987-6543",
+      "status": "completed",
+      "intent": "Schedule medical consultation with Dr. Sharma",
+      "collected_data": {
+        "caller_phone": "+1 (555) 987-6543",
+        "caller_name": "Aarav Gupta",
+        "doctor_specialty": "Cardiology",
+        "preferred_date": "Tomorrow",
+        "preferred_time": "16:00"
+      },
+      "summary": "Aarav Gupta contacted Apex Care Multi-Specialty Clinic regarding: Schedule medical consultation with Dr. Sharma. Result: Google Calendar Event Booked: Tomorrow at 4:00 PM.",
+      "action_performed": "Google Calendar Event Booked: Tomorrow at 4:00 PM",
+      "priority": "normal",
+      "follow_up_status": "contacted",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hello! This is Apex Care Medical Centre calling you back after missing your call. Are you calling to book a new appointment, reschedule, or inquire about clinic hours?",
+          "timestamp": "10:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I want to schedule an appointment with Dr. Sharma tomorrow at 4 PM",
+          "timestamp": "09:57:29 am"
+        },
+        {
+          "role": "assistant",
+          "message": "Wonderful! I have verified availability and booked your appointment with Dr. Sharma for tomorrow at 4:00 PM on our Google Calendar. An SMS confirmation is on its way.",
+          "timestamp": "09:57:29 am"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788755249411",
+      "created_at": "2026-09-07T04:27:29.411Z",
+      "updated_at": "2026-09-07T04:27:29.411Z"
+    },
+    {
+      "business_id": "b-bakery-002",
+      "workflow_id": "wf-cake-order",
+      "business_name": "Sweet Delights Artisan Cake Studio",
+      "workflow_name": "Cake Studio Missed Call - Custom Order & Inquiry",
+      "caller_name": "Priya Sengupta",
+      "caller_phone": "+1 (555) 345-6789",
+      "status": "completed",
+      "intent": "Custom Belgian Chocolate Truffle cake order inquiry",
+      "collected_data": {
+        "caller_phone": "+1 (555) 345-6789",
+        "caller_name": "Priya Sengupta",
+        "cake_type": "Birthday",
+        "flavor": "Belgian Chocolate Truffle",
+        "weight_kg": "2 kg",
+        "fulfillment_type": "Store Pickup"
+      },
+      "summary": "Priya Sengupta contacted Sweet Delights Artisan Cake Studio regarding: Custom Belgian Chocolate Truffle cake order inquiry. Result: Urgent Kitchen Notification & Order Enquiry Logged.",
+      "action_performed": "Urgent Kitchen Notification & Order Enquiry Logged",
+      "priority": "urgent",
+      "follow_up_status": "completed",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hi there! This is Sweet Delights Cake Studio returning your call. Are you interested in placing a custom cake order, or did you have a quick question about our menu?",
+          "timestamp": "11:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I need a 2kg Belgian chocolate truffle cake for a birthday today evening",
           "timestamp": "09:46:12 am"
         },
         {
@@ -578,6 +748,32 @@
       "status": "confirmed",
       "id": "cal-1788754572346",
       "created_at": "2026-09-07T04:16:12.346Z"
+    },
+    {
+      "title": "Clinic Appointment - Aarav Gupta",
+      "start_time": "2026-09-08T10:30:00.000Z",
+      "end_time": "2026-09-08T11:15:00.000Z",
+      "attendee_name": "Aarav Gupta",
+      "attendee_phone": "+1 (555) 987-6543",
+      "doctor_or_service": "Dr. Sharma (Cardiology)",
+      "notes": "Consultation booked via Voice Assistant callback.",
+      "google_event_id": "gcal_mock_1788755249385",
+      "status": "confirmed",
+      "id": "cal-1788755249385",
+      "created_at": "2026-09-07T04:27:29.385Z"
+    },
+    {
+      "title": "Clinic Appointment - Aarav Gupta",
+      "start_time": "2026-09-08T10:30:00.000Z",
+      "end_time": "2026-09-08T11:15:00.000Z",
+      "attendee_name": "Aarav Gupta",
+      "attendee_phone": "+1 (555) 987-6543",
+      "doctor_or_service": "Dr. Sharma (Cardiology)",
+      "notes": "Consultation booked via Voice Assistant callback.",
+      "google_event_id": "gcal_mock_1788755598513",
+      "status": "confirmed",
+      "id": "cal-1788755598513",
+      "created_at": "2026-09-07T04:33:18.513Z"
     }
   ]
 }

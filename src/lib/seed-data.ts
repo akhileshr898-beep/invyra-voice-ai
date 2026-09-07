@@ -1,34 +1,79 @@
-import { Business, Workflow, ConversationRecord, CalendarEvent } from "./types";
+import { Business, Workflow, ConversationRecord, CalendarEvent, User } from "./types";
+
+export const INITIAL_USERS: User[] = [
+  {
+    id: "u-clinic-sharma",
+    email: "dr.sharma@apexclinic.com",
+    owner_name: "Dr. Aryan Sharma",
+    password_hash: "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+    salt: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+    created_at: new Date(Date.now() - 86400000 * 30).toISOString(),
+  },
+  {
+    id: "u-bakery-bella",
+    email: "chef.bella@sweetdelights.com",
+    owner_name: "Chef Bella Rossi",
+    password_hash: "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+    salt: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+    created_at: new Date(Date.now() - 86400000 * 25).toISOString(),
+  },
+  {
+    id: "u-logistics-marcus",
+    email: "dispatch@swiftlogistics.com",
+    owner_name: "Marcus Vance",
+    password_hash: "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+    salt: "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+    created_at: new Date(Date.now() - 86400000 * 20).toISOString(),
+  },
+];
 
 export const INITIAL_BUSINESSES: Business[] = [
   {
     id: "b-clinic-001",
+    owner_user_id: "u-clinic-sharma",
+    owner_name: "Dr. Aryan Sharma",
+    email: "dr.sharma@apexclinic.com",
     name: "Apex Care Multi-Specialty Clinic",
     industry: "Clinic & Healthcare",
     phone: "+1 (555) 382-4411",
+    business_address: "742 Evergreen Terrace, Suite 100, New York, NY",
+    preferred_language: "English & Hindi",
     timezone: "America/New_York",
     operating_hours: "Mon-Sat: 8:30 AM - 7:00 PM",
     tone: "Empathetic, reassuring, professional and efficient. Never give medical diagnoses.",
+    google_calendar_connected: true,
     created_at: new Date(Date.now() - 86400000 * 7).toISOString(),
   },
   {
     id: "b-bakery-002",
+    owner_user_id: "u-bakery-bella",
+    owner_name: "Chef Bella Rossi",
+    email: "chef.bella@sweetdelights.com",
     name: "Sweet Delights Artisan Cake Studio",
     industry: "Bakery & Cake Shop",
     phone: "+1 (555) 794-2201",
+    business_address: "128 Baker St, New York, NY",
+    preferred_language: "English",
     timezone: "America/New_York",
     operating_hours: "Tue-Sun: 9:00 AM - 8:00 PM",
     tone: "Warm, cheerful, creative, and enthusiastic.",
+    google_calendar_connected: false,
     created_at: new Date(Date.now() - 86400000 * 6).toISOString(),
   },
   {
     id: "b-logistics-003",
+    owner_user_id: "u-logistics-marcus",
+    owner_name: "Marcus Vance",
+    email: "dispatch@swiftlogistics.com",
     name: "SwiftLogistics Express Dispatch",
     industry: "Delivery & Logistics",
     phone: "+1 (555) 912-8833",
+    business_address: "500 Harbor Blvd, Dispatch Dock 4, New York, NY",
+    preferred_language: "English",
     timezone: "America/New_York",
     operating_hours: "24/7 Operations",
     tone: "Crisp, urgent, precise, and solution-oriented.",
+    google_calendar_connected: false,
     created_at: new Date(Date.now() - 86400000 * 5).toISOString(),
   }
 ];
@@ -266,6 +311,7 @@ export const INITIAL_CONVERSATIONS: ConversationRecord[] = [
 export const INITIAL_CALENDAR_EVENTS: CalendarEvent[] = [
   {
     id: "cal-001",
+    business_id: "b-clinic-001",
     conversation_id: "conv-101",
     title: "Cardiology Consultation - Eleanor Vance",
     start_time: new Date(Date.now() + 86400000).toISOString().split("T")[0] + "T16:00:00.000Z",
@@ -280,6 +326,7 @@ export const INITIAL_CALENDAR_EVENTS: CalendarEvent[] = [
   },
   {
     id: "cal-002",
+    business_id: "b-clinic-001",
     title: "General Checkup - Marcus Lee",
     start_time: new Date().toISOString().split("T")[0] + "T11:00:00.000Z",
     end_time: new Date().toISOString().split("T")[0] + "T11:30:00.000Z",

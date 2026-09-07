@@ -17,7 +17,9 @@ import {
   HeartPulse,
   Cake,
   Truck,
-  Trash2
+  Trash2,
+  LogOut,
+  UserCheck
 } from "lucide-react";
 import { Business } from "@/lib/types";
 
@@ -36,6 +38,8 @@ interface NavbarProps {
   onSelectBusiness: (business: Business) => void;
   onOpenNewBusinessModal: () => void;
   onDeleteBusiness?: (id: string) => Promise<void> | void;
+  currentUser?: { id: string; email: string; owner_name: string } | null;
+  onLogout?: () => void;
 }
 
 export function Navbar({
@@ -46,6 +50,8 @@ export function Navbar({
   onSelectBusiness,
   onOpenNewBusinessModal,
   onDeleteBusiness,
+  currentUser,
+  onLogout,
 }: NavbarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -226,6 +232,35 @@ export function Navbar({
             })}
           </nav>
 
+          {/* Current User Badge & Logout (Desktop) */}
+          {currentUser && (
+            <div className="hidden lg:flex items-center gap-2 pl-2 border-l border-slate-200">
+              <div className="flex items-center gap-2 px-2.5 py-1 rounded-xl bg-slate-100/80 border border-slate-200 text-xs">
+                <div className="w-6 h-6 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-[10px]">
+                  {currentUser.owner_name?.slice(0, 1) || "U"}
+                </div>
+                <div className="flex flex-col text-left max-w-[120px]">
+                  <span className="font-semibold text-slate-800 truncate text-[11px] leading-tight">
+                    {currentUser.owner_name}
+                  </span>
+                  <span className="text-[10px] text-slate-400 truncate">
+                    {currentUser.email}
+                  </span>
+                </div>
+              </div>
+
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  title="Sign Out"
+                  className="p-1.5 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-transparent hover:border-rose-100 transition active:scale-95"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
+            </div>
+          )}
+
           {/* Mobile Menu Toggle Button */}
           <div className="flex md:hidden">
             <button
@@ -270,6 +305,31 @@ export function Navbar({
               </button>
             );
           })}
+
+          {currentUser && (
+            <div className="pt-3 mt-2 border-t border-slate-200">
+              <div className="flex items-center justify-between px-3 py-2 bg-slate-50 rounded-xl mb-2">
+                <div className="flex items-center gap-2.5 truncate">
+                  <div className="w-8 h-8 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">
+                    {currentUser.owner_name?.slice(0, 1) || "U"}
+                  </div>
+                  <div className="truncate">
+                    <div className="text-xs font-semibold text-slate-900 truncate">{currentUser.owner_name}</div>
+                    <div className="text-[11px] text-slate-500 truncate">{currentUser.email}</div>
+                  </div>
+                </div>
+              </div>
+              {onLogout && (
+                <button
+                  onClick={onLogout}
+                  className="w-full flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl text-xs font-semibold text-rose-600 bg-rose-50 hover:bg-rose-100 transition"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span>Sign Out of Account</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
     </header>

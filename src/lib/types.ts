@@ -1,11 +1,36 @@
+export interface User {
+  id: string;
+  email: string;
+  password_hash: string;
+  salt: string;
+  owner_name: string;
+  reset_token?: string;
+  reset_token_expiry?: number;
+  created_at: string;
+}
+
+export interface AuthSession {
+  userId: string;
+  email: string;
+  ownerName: string;
+  businessId?: string;
+  expiresAt: number;
+}
+
 export interface Business {
   id: string;
+  owner_user_id: string;
   name: string;
   industry: string;
+  owner_name?: string;
+  email?: string;
   phone: string;
+  business_address?: string;
+  preferred_language?: string;
   timezone: string;
   operating_hours: string;
   tone: string;
+  google_calendar_connected?: boolean;
   created_at: string;
 }
 
@@ -74,6 +99,7 @@ export interface ConversationRecord {
 
 export interface CalendarEvent {
   id: string;
+  business_id?: string;
   conversation_id?: string;
   title: string;
   start_time: string; // ISO 8601

@@ -13,23 +13,37 @@ async function runTests() {
   const baseUrl = await getBaseUrl();
   console.log(`=== RUNNING INVYRA VOICE AI TESTS (Target: ${baseUrl}) ===\n`);
 
+  // 0. Authenticate as Demo Account
+  console.log("0. Authenticating as Dr. Sharma (Demo Account)...");
+  const loginRes = await fetch(`${baseUrl}/api/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: "dr.sharma@apexclinic.com",
+      password: "Demo1234!",
+    }),
+  });
+  const loginData = await loginRes.json();
+  const authHeader = { Authorization: `Bearer ${loginData.token}` };
+  console.log(`-> Authenticated as: ${loginData.user?.owner_name} (${loginData.user?.email})\n`);
+
   // 1. Test GET /api/businesses
   console.log("1. Testing GET /api/businesses...");
-  const bizRes = await fetch(`${baseUrl}/api/businesses`);
+  const bizRes = await fetch(`${baseUrl}/api/businesses`, { headers: authHeader });
   const bizData = await bizRes.json();
   console.log(`-> Loaded ${bizData.businesses.length} businesses:`);
   bizData.businesses.forEach((b) => console.log(`   * ${b.name} (${b.industry})`));
 
   // 2. Test GET /api/workflows
   console.log("\n2. Testing GET /api/workflows...");
-  const wfRes = await fetch(`${baseUrl}/api/workflows`);
+  const wfRes = await fetch(`${baseUrl}/api/workflows`, { headers: authHeader });
   const wfData = await wfRes.json();
   console.log(`-> Loaded ${wfData.workflows.length} workflows:`);
-  wfData.workflows.forEach((w) => console.log(`   * ${w.name} (Fields: ${w.fields_schema.length}, Rules: ${w.conditional_rules.length})`));
+  wfData.workflows.forEach((w) => console.log(`   * ${w.name} (Fields: ${w.fields_schema.length}, Rules: ${w.conditional_rules ? w.conditional_rules.length : 0})`));
 
   // 3. Test GET /api/calendar
   console.log("\n3. Testing GET /api/calendar...");
-  const calRes = await fetch(`${baseUrl}/api/calendar`);
+  const calRes = await fetch(`${baseUrl}/api/calendar`, { headers: authHeader });
   const calData = await calRes.json();
   console.log(`-> Loaded ${calData.events.length} calendar events:`);
   calData.events.forEach((e) => console.log(`   * ${e.title} [${e.status}] (${e.start_time})`));
@@ -38,7 +52,7 @@ async function runTests() {
   console.log("\n4. Testing POST /api/calendar (checkAvailability tool)...");
   const checkRes = await fetch(`${baseUrl}/api/calendar`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeader },
     body: JSON.stringify({
       action: "checkAvailability",
       date: new Date(Date.now() + 86400000).toISOString().split("T")[0],
@@ -51,11 +65,11 @@ async function runTests() {
 
   // 5. Test Chat Turn: Clinic Appointment Booking with Autonomous Tool Calling
   console.log("\n5. Testing POST /api/chat (Clinic Appointment Booking Flow)...");
-  const clinicBiz = bizData.businesses.find((b) => b.name.includes("Clinic"));
-  const clinicWf = wfData.workflows.find((w) => w.business_id === clinicBiz.id);
+  const clinicBiz = bizData.businesses[0];
+  const clinicWf = wfData.workflows[0];
   const chatRes = await fetch(`${baseUrl}/api/chat`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeader },
     body: JSON.stringify({
       businessId: clinicBiz.id,
       workflowId: clinicWf.id,
@@ -74,12 +88,24 @@ async function runTests() {
   console.log("-> Action Performed:", chatData.actionPerformed);
 
   // 6. Test Chat Turn: Cake Shop Urgent Order Condition
-  console.log("\n6. Testing POST /api/chat (Cake Shop Urgency Condition)...");
-  const bakeryBiz = bizData.businesses.find((b) => b.name.includes("Cake"));
-  const bakeryWf = wfData.workflows.find((w) => w.business_id === bakeryBiz.id);
-  const cakeRes = await fetch(`${baseUrl}/api/chat`, {
+  console.log("\n6. Testing POST /api/chat (Cake Shop Urgency Condition - Chef Bella Tenant)...");
+  const loginBella = await fetch(`${baseUrl}/api/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email: "chef.bella@sweetdelights.com", password: "Demo1234!" }),
+  });
+  const bellaData = await loginBella.json();
+  const authBella = { Authorization: `Bearer ${bellaData.token}` };
+  const bellaBizRes = await fetch(`${baseUrl}/api/businesses`, { headers: authBella });
+  const bellaBizData = await bellaBizRes.json();
+  const bakeryBiz = bellaBizData.businesses[0];
+  const bellaWfRes = await fetch(`${baseUrl}/api/workflows?businessId=${bakeryBiz.id}`, { headers: authBella });
+  const bellaWfData = await bellaWfRes.json();
+  const bakeryWf = bellaWfData.workflows[0];
+
+  const cakeRes = await fetch(`${baseUrl}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authBella },
     body: JSON.stringify({
       businessId: bakeryBiz.id,
       workflowId: bakeryWf.id,
@@ -97,23 +123,25 @@ async function runTests() {
   console.log("-> Action Performed:", cakeData.actionPerformed);
 
   // 7. Test Customer Records: GET & PATCH Follow-Up Status
-  console.log("\n7. Testing GET /api/conversations & PATCH follow_up_status...");
-  const convRes = await fetch(`${baseUrl}/api/conversations`);
+  console.log("\n7. Testing GET /api/conversations & PATCH follow_up_status (Dr. Sharma Tenant)...");
+  const convRes = await fetch(`${baseUrl}/api/conversations`, { headers: authHeader });
   const convData = await convRes.json();
   console.log(`-> Total Conversation Records: ${convData.records.length}`);
   const firstRecord = convData.records[0];
-  console.log(`-> Updating record ${firstRecord.id} status from '${firstRecord.follow_up_status}' to 'completed'...`);
+  if (firstRecord) {
+    console.log(`-> Updating record ${firstRecord.id} status from '${firstRecord.follow_up_status}' to 'completed'...`);
 
-  const patchRes = await fetch(`${baseUrl}/api/conversations`, {
-    method: "PATCH",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      id: firstRecord.id,
-      followUpStatus: "completed",
-    }),
-  });
-  const updatedRecord = await patchRes.json();
-  console.log(`-> Updated Follow-Up Status: ${updatedRecord.follow_up_status}`);
+    const patchRes = await fetch(`${baseUrl}/api/conversations`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", ...authHeader },
+      body: JSON.stringify({
+        id: firstRecord.id,
+        followUpStatus: "completed",
+      }),
+    });
+    const updatedRecord = await patchRes.json();
+    console.log(`-> Updated Follow-Up Status: ${updatedRecord.follow_up_status}`);
+  }
 
   console.log("\n=== ALL END-TO-END TESTS COMPLETED SUCCESSFULLY ===");
 }

@@ -1,6 +1,58 @@
 {
   "businesses": [
     {
+      "name": "Test Tenant B Bakery",
+      "industry": "Bakery & Cake Shop",
+      "phone": "+1 (555) 222-0002",
+      "timezone": "America/New_York",
+      "operating_hours": "Tue-Sun 8AM-8PM",
+      "tone": "Warm and cheerful",
+      "owner_user_id": "u-1788792253382-48j0f",
+      "owner_name": "Chef Bella Tenant B",
+      "email": "baker.bella.1788792252705@testbakery.com",
+      "id": "b-1788792253718-zzp1",
+      "created_at": "2026-09-07T14:44:13.718Z"
+    },
+    {
+      "name": "Test Tenant A Clinic",
+      "industry": "Clinic & Healthcare",
+      "phone": "+1 (555) 111-0001",
+      "timezone": "America/New_York",
+      "operating_hours": "Mon-Fri 9AM-5PM",
+      "tone": "Medical and empathetic",
+      "owner_user_id": "u-1788792253276-m74bt",
+      "owner_name": "Dr. Sharma Tenant A",
+      "email": "doctor.sharma.1788792252705@testclinic.com",
+      "id": "b-1788792253674-w3xl",
+      "created_at": "2026-09-07T14:44:13.674Z"
+    },
+    {
+      "name": "Test Tenant B Bakery",
+      "industry": "Bakery & Cake Shop",
+      "phone": "+1 (555) 222-0002",
+      "timezone": "America/New_York",
+      "operating_hours": "Tue-Sun 8AM-8PM",
+      "tone": "Warm and cheerful",
+      "owner_user_id": "u-1788791944134-n3kar",
+      "owner_name": "Chef Bella Tenant B",
+      "email": "baker.bella.1788791940196@testbakery.com",
+      "id": "b-1788791945217-pk1k",
+      "created_at": "2026-09-07T14:39:05.217Z"
+    },
+    {
+      "name": "Test Tenant A Clinic",
+      "industry": "Clinic & Healthcare",
+      "phone": "+1 (555) 111-0001",
+      "timezone": "America/New_York",
+      "operating_hours": "Mon-Fri 9AM-5PM",
+      "tone": "Medical and empathetic",
+      "owner_user_id": "u-1788791943984-fwrjc",
+      "owner_name": "Dr. Sharma Tenant A",
+      "email": "doctor.sharma.1788791940196@testclinic.com",
+      "id": "b-1788791945113-sh6p",
+      "created_at": "2026-09-07T14:39:05.113Z"
+    },
+    {
       "id": "b-clinic-001",
       "name": "Apex Care Multi-Specialty Clinic",
       "industry": "Clinic & Healthcare",
@@ -8,7 +60,13 @@
       "timezone": "America/New_York",
       "operating_hours": "Mon-Sat: 8:30 AM - 7:00 PM",
       "tone": "Empathetic, reassuring, professional and efficient. Never give medical diagnoses.",
-      "created_at": "2026-08-31T03:44:04.249Z"
+      "created_at": "2026-08-31T03:44:04.249Z",
+      "owner_user_id": "u-clinic-sharma",
+      "owner_name": "Dr. Aryan Sharma",
+      "email": "dr.sharma@apexclinic.com",
+      "business_address": "742 Evergreen Terrace, Suite 100, New York, NY",
+      "preferred_language": "English & Hindi",
+      "google_calendar_connected": true
     },
     {
       "id": "b-bakery-002",
@@ -18,7 +76,13 @@
       "timezone": "America/New_York",
       "operating_hours": "Tue-Sun: 9:00 AM - 8:00 PM",
       "tone": "Warm, cheerful, creative, and enthusiastic.",
-      "created_at": "2026-09-01T03:44:04.250Z"
+      "created_at": "2026-09-01T03:44:04.250Z",
+      "owner_user_id": "u-bakery-bella",
+      "owner_name": "Chef Bella Rossi",
+      "email": "chef.bella@sweetdelights.com",
+      "business_address": "128 Baker St, New York, NY",
+      "preferred_language": "English",
+      "google_calendar_connected": false
     },
     {
       "id": "b-logistics-003",
@@ -28,10 +92,34 @@
       "timezone": "America/New_York",
       "operating_hours": "24/7 Operations",
       "tone": "Crisp, urgent, precise, and solution-oriented.",
-      "created_at": "2026-09-02T03:44:04.251Z"
+      "created_at": "2026-09-02T03:44:04.251Z",
+      "owner_user_id": "u-logistics-marcus",
+      "owner_name": "Marcus Vance",
+      "email": "dispatch@swiftlogistics.com",
+      "business_address": "500 Harbor Blvd, Port Newark, NJ",
+      "preferred_language": "English",
+      "google_calendar_connected": false
     }
   ],
   "workflows": [
+    {
+      "business_id": "b-1788792253674-w3xl",
+      "name": "Owner A Private Medical Triage",
+      "trigger": "missed_call",
+      "greeting": "Hello, this is Tenant A Clinic.",
+      "fields_schema": [],
+      "id": "wf-1788792253879-t1oi",
+      "created_at": "2026-09-07T14:44:13.879Z"
+    },
+    {
+      "business_id": "b-1788791945113-sh6p",
+      "name": "Owner A Private Medical Triage",
+      "trigger": "missed_call",
+      "greeting": "Hello, this is Tenant A Clinic.",
+      "fields_schema": [],
+      "id": "wf-1788791945763-hs67",
+      "created_at": "2026-09-07T14:39:05.763Z"
+    },
     {
       "id": "wf-clinic-booking",
       "business_id": "b-clinic-001",
@@ -228,6 +316,91 @@
       "summary": "Priya Sengupta contacted Sweet Delights Artisan Cake Studio regarding: Custom Belgian Chocolate Truffle cake order inquiry. Result: Urgent Kitchen Notification & Order Enquiry Logged.",
       "action_performed": "Urgent Kitchen Notification & Order Enquiry Logged",
       "priority": "urgent",
+      "follow_up_status": "pending",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hi there! This is Sweet Delights Cake Studio returning your call. Are you interested in placing a custom cake order, or did you have a quick question about our menu?",
+          "timestamp": "11:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I need a 2kg Belgian chocolate truffle cake for a birthday today evening",
+          "timestamp": "08:13:40 pm"
+        },
+        {
+          "role": "assistant",
+          "message": "Delightful! I have recorded your order for a 2 kg Belgian Chocolate Truffle cake. Since it is needed within 24 hours, our kitchen team has marked it as URGENT priority!",
+          "timestamp": "08:13:40 pm"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788792220107-0og0",
+      "created_at": "2026-09-07T14:43:40.107Z",
+      "updated_at": "2026-09-07T14:43:40.107Z"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "workflow_id": "wf-clinic-booking",
+      "business_name": "Apex Care Multi-Specialty Clinic",
+      "workflow_name": "Clinic Missed Call - Appointment Booking & Rescheduling",
+      "caller_name": "Aarav Gupta",
+      "caller_phone": "+1 (555) 987-6543",
+      "status": "completed",
+      "intent": "Schedule medical consultation with Dr. Sharma",
+      "collected_data": {
+        "caller_phone": "+1 (555) 987-6543",
+        "caller_name": "Aarav Gupta",
+        "doctor_specialty": "Cardiology",
+        "preferred_date": "Tomorrow",
+        "preferred_time": "16:00"
+      },
+      "summary": "Aarav Gupta contacted Apex Care Multi-Specialty Clinic regarding: Schedule medical consultation with Dr. Sharma. Result: Google Calendar Event Booked: Tomorrow at 4:00 PM.",
+      "action_performed": "Google Calendar Event Booked: Tomorrow at 4:00 PM",
+      "priority": "normal",
+      "follow_up_status": "completed",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hello! This is Apex Care Medical Centre calling you back after missing your call. Are you calling to book a new appointment, reschedule, or inquire about clinic hours?",
+          "timestamp": "10:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I want to schedule an appointment with Dr. Sharma tomorrow at 4 PM",
+          "timestamp": "08:13:39 pm"
+        },
+        {
+          "role": "assistant",
+          "message": "Wonderful! I have verified availability and booked your appointment with Dr. Sharma for tomorrow at 4:00 PM on our Google Calendar. An SMS confirmation is on its way.",
+          "timestamp": "08:13:39 pm"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788792219831-41ho",
+      "created_at": "2026-09-07T14:43:39.831Z",
+      "updated_at": "2026-09-07T14:43:40.376Z"
+    },
+    {
+      "business_id": "b-bakery-002",
+      "workflow_id": "wf-cake-order",
+      "business_name": "Sweet Delights Artisan Cake Studio",
+      "workflow_name": "Cake Studio Missed Call - Custom Order & Inquiry",
+      "caller_name": "Priya Sengupta",
+      "caller_phone": "+1 (555) 345-6789",
+      "status": "completed",
+      "intent": "Custom Belgian Chocolate Truffle cake order inquiry",
+      "collected_data": {
+        "caller_phone": "+1 (555) 345-6789",
+        "caller_name": "Priya Sengupta",
+        "cake_type": "Birthday",
+        "flavor": "Belgian Chocolate Truffle",
+        "weight_kg": "2 kg",
+        "fulfillment_type": "Store Pickup"
+      },
+      "summary": "Priya Sengupta contacted Sweet Delights Artisan Cake Studio regarding: Custom Belgian Chocolate Truffle cake order inquiry. Result: Urgent Kitchen Notification & Order Enquiry Logged.",
+      "action_performed": "Urgent Kitchen Notification & Order Enquiry Logged",
+      "priority": "urgent",
       "follow_up_status": "completed",
       "transcript": [
         {
@@ -270,7 +443,7 @@
       "summary": "Aarav Gupta contacted Apex Care Multi-Specialty Clinic regarding: Schedule medical consultation with Dr. Sharma. Result: Google Calendar Event Booked: Tomorrow at 4:00 PM.",
       "action_performed": "Google Calendar Event Booked: Tomorrow at 4:00 PM",
       "priority": "normal",
-      "follow_up_status": "contacted",
+      "follow_up_status": "completed",
       "transcript": [
         {
           "role": "assistant",
@@ -291,7 +464,7 @@
       "language": "en",
       "id": "conv-1788790768162",
       "created_at": "2026-09-07T14:19:28.162Z",
-      "updated_at": "2026-09-07T14:19:28.162Z"
+      "updated_at": "2026-09-07T14:41:20.488Z"
     },
     {
       "business_id": "b-bakery-002",
@@ -1048,7 +1221,8 @@
       "notes": "Follow-up blood pressure check. Booked via Voice AI Assistant.",
       "google_event_id": "gcal_evt_101",
       "status": "confirmed",
-      "created_at": "2026-09-07T00:44:04.251Z"
+      "created_at": "2026-09-07T00:44:04.251Z",
+      "business_id": "b-clinic-001"
     },
     {
       "id": "cal-002",
@@ -1061,7 +1235,8 @@
       "notes": "Annual wellness check.",
       "google_event_id": "gcal_evt_102",
       "status": "confirmed",
-      "created_at": "2026-09-05T03:44:04.251Z"
+      "created_at": "2026-09-05T03:44:04.251Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1074,7 +1249,8 @@
       "google_event_id": "gcal_mock_1788752649065",
       "status": "confirmed",
       "id": "cal-1788752649065",
-      "created_at": "2026-09-07T03:44:09.066Z"
+      "created_at": "2026-09-07T03:44:09.066Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1087,7 +1263,8 @@
       "google_event_id": "gcal_mock_1788754572346",
       "status": "confirmed",
       "id": "cal-1788754572346",
-      "created_at": "2026-09-07T04:16:12.346Z"
+      "created_at": "2026-09-07T04:16:12.346Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1100,7 +1277,8 @@
       "google_event_id": "gcal_mock_1788755249385",
       "status": "confirmed",
       "id": "cal-1788755249385",
-      "created_at": "2026-09-07T04:27:29.385Z"
+      "created_at": "2026-09-07T04:27:29.385Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1113,7 +1291,8 @@
       "google_event_id": "gcal_mock_1788755598513",
       "status": "confirmed",
       "id": "cal-1788755598513",
-      "created_at": "2026-09-07T04:33:18.513Z"
+      "created_at": "2026-09-07T04:33:18.513Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1126,7 +1305,8 @@
       "google_event_id": "gcal_mock_1788755781421",
       "status": "confirmed",
       "id": "cal-1788755781421",
-      "created_at": "2026-09-07T04:36:21.421Z"
+      "created_at": "2026-09-07T04:36:21.421Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1139,7 +1319,8 @@
       "google_event_id": "gcal_mock_1788755843766",
       "status": "confirmed",
       "id": "cal-1788755843767",
-      "created_at": "2026-09-07T04:37:23.767Z"
+      "created_at": "2026-09-07T04:37:23.767Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1152,7 +1333,8 @@
       "google_event_id": "gcal_mock_1788770594847",
       "status": "confirmed",
       "id": "cal-1788770594847",
-      "created_at": "2026-09-07T08:43:14.847Z"
+      "created_at": "2026-09-07T08:43:14.847Z",
+      "business_id": "b-clinic-001"
     },
     {
       "title": "Clinic Appointment - Aarav Gupta",
@@ -1165,7 +1347,80 @@
       "google_event_id": "gcal_mock_1788790768039",
       "status": "confirmed",
       "id": "cal-1788790768039",
-      "created_at": "2026-09-07T14:19:28.039Z"
+      "created_at": "2026-09-07T14:19:28.039Z",
+      "business_id": "b-clinic-001"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "title": "Clinic Appointment - Aarav Gupta",
+      "start_time": "2026-09-08T10:30:00.000Z",
+      "end_time": "2026-09-08T11:15:00.000Z",
+      "attendee_name": "Aarav Gupta",
+      "attendee_phone": "+1 (555) 987-6543",
+      "doctor_or_service": "Dr. Sharma (Cardiology)",
+      "notes": "Consultation booked via Voice Assistant callback.",
+      "google_event_id": "gcal_mock_1788792219798",
+      "status": "confirmed",
+      "id": "cal-1788792219798-7t2c",
+      "created_at": "2026-09-07T14:43:39.799Z"
+    }
+  ],
+  "users": [
+    {
+      "id": "u-clinic-sharma",
+      "email": "dr.sharma@apexclinic.com",
+      "owner_name": "Dr. Aryan Sharma",
+      "password_hash": "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+      "salt": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+      "created_at": "2026-08-08T14:39:03.896Z"
+    },
+    {
+      "id": "u-bakery-bella",
+      "email": "chef.bella@sweetdelights.com",
+      "owner_name": "Chef Bella Rossi",
+      "password_hash": "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+      "salt": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+      "created_at": "2026-08-13T14:39:03.896Z"
+    },
+    {
+      "id": "u-logistics-marcus",
+      "email": "dispatch@swiftlogistics.com",
+      "owner_name": "Marcus Vance",
+      "password_hash": "fb1dacbd7a7075cae1f2e71d2a8677ce8c06e1d5f8b1de62fb492545e33a6fb2c2871ada104ad8a72573fab930b59c1538b1a66317658fce3a4f504cb91111a1",
+      "salt": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+      "created_at": "2026-08-18T14:39:03.896Z"
+    },
+    {
+      "email": "doctor.sharma.1788791940196@testclinic.com",
+      "owner_name": "Dr. Sharma Tenant A",
+      "password_hash": "f9cab49bdb2f8bb5e1aec35f3d73ce856942aaa8ade23c3ccdae4d044d1f295c2d13d4c60621ae525867e3bd539702d644f5f7a63f6929b1ae601ee5967e4c43",
+      "salt": "ac9657bd57eb2d095e8e0ecc6ff404d0",
+      "id": "u-1788791943984-fwrjc",
+      "created_at": "2026-09-07T14:39:03.984Z"
+    },
+    {
+      "email": "baker.bella.1788791940196@testbakery.com",
+      "owner_name": "Chef Bella Tenant B",
+      "password_hash": "e3ef3857bf07a5f823559e869b1c165a197a50e97323c41b8dbdaa1e5e99fca0dc028db2fd7125ed4549a053cb92c16a7636862fee7588cf3cb54aacad986abb",
+      "salt": "f08bc7b0a6db03989f514e2f984e200a",
+      "id": "u-1788791944134-n3kar",
+      "created_at": "2026-09-07T14:39:04.134Z"
+    },
+    {
+      "email": "doctor.sharma.1788792252705@testclinic.com",
+      "owner_name": "Dr. Sharma Tenant A",
+      "password_hash": "f1ea551b3be72da20c3f8096f46ed213d064ecd9d3c38e02ed883f9fc7061361550fa6da345841a6b6ae1f7a68f86ad721d455393e1af6ab7950f65a87211978",
+      "salt": "380dfb8cfd25c1663c29e42dd8595b99",
+      "id": "u-1788792253276-m74bt",
+      "created_at": "2026-09-07T14:44:13.276Z"
+    },
+    {
+      "email": "baker.bella.1788792252705@testbakery.com",
+      "owner_name": "Chef Bella Tenant B",
+      "password_hash": "07c6f132fa9df3f265fd56dc645b3e2244515492cb5aa6a9d2e49f17aef3c4fc47b1349ebbfdc1518137b30dbff8ade871bfc6d7478f5b3e7eb45ac398ff5e40",
+      "salt": "6fbcde60ad212045322747c8b5f20641",
+      "id": "u-1788792253382-48j0f",
+      "created_at": "2026-09-07T14:44:13.382Z"
     }
   ]
 }

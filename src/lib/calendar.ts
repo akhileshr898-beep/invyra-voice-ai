@@ -99,6 +99,7 @@ export async function checkAvailability(
  * 2. Create a calendar event
  */
 export async function createEvent(params: {
+  businessId?: string;
   title: string;
   date: string;
   startTime: string;
@@ -135,6 +136,7 @@ export async function createEvent(params: {
   }
 
   const saved = await db.createCalendarEvent({
+    business_id: params.businessId || "b-clinic-001",
     conversation_id: params.conversationId,
     title: params.title,
     start_time: startIso,
@@ -154,6 +156,7 @@ export async function createEvent(params: {
  * 3. Reschedule an existing event
  */
 export async function rescheduleEvent(params: {
+  businessId?: string;
   eventIdOrKeyword: string;
   newDate: string;
   newStartTime: string;
@@ -186,7 +189,8 @@ export async function rescheduleEvent(params: {
     params.eventIdOrKeyword,
     newStartIso,
     newEndIso,
-    params.reason
+    params.reason,
+    params.businessId
   );
 }
 
@@ -194,6 +198,7 @@ export async function rescheduleEvent(params: {
  * 4. Cancel/delete an existing event
  */
 export async function cancelEvent(params: {
+  businessId?: string;
   eventIdOrKeyword: string;
   reason?: string;
 }): Promise<CalendarEvent | null> {
@@ -209,5 +214,5 @@ export async function cancelEvent(params: {
     }
   }
 
-  return await db.cancelCalendarEvent(params.eventIdOrKeyword, params.reason);
+  return await db.cancelCalendarEvent(params.eventIdOrKeyword, params.reason, params.businessId);
 }

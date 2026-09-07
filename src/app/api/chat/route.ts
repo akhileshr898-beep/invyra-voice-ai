@@ -2,10 +2,23 @@ import { NextRequest, NextResponse } from "next/server";
 import * as db from "@/lib/db";
 import { runGeminiConversationTurn } from "@/lib/gemini";
 import { Business, Workflow, TranscriptMessage } from "@/lib/types";
+import { checkRateLimit, sanitizeTextInput, detectPromptInjection } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  // 1. Rate Limiting Protection (40 req/min)
+  const rateLimit = checkRateLimit(req, 40, 60000);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: `Too many requests. Please slow down. Retry in ${rateLimit.resetInSec}s.` },
+      { 
+        status: 429, 
+        headers: { "Retry-After": String(rateLimit.resetInSec) } 
+      }
+    );
+  }
+
   try {
     const body = await req.json();
     const {
@@ -17,8 +30,29 @@ export async function POST(req: NextRequest) {
       callerName = "Valued Caller",
     } = body;
 
-    if (!latestUserMessage) {
-      return NextResponse.json({ error: "Missing latestUserMessage" }, { status: 400 });
+    if (!latestUserMessage || typeof latestUserMessage !== "string") {
+      return NextResponse.json({ error: "Missing or invalid latestUserMessage" }, { status: 400 });
+    }
+
+    // 2. Input Sanitization
+    const cleanUserMessage = sanitizeTextInput(latestUserMessage, 1500);
+    const cleanCallerName = sanitizeTextInput(callerName, 100) || "Valued Caller";
+    const cleanCallerPhone = sanitizeTextInput(callerPhone, 30) || "+1 (555) 234-5678";
+
+    // 3. Prompt Injection / Jailbreak Guardrail
+    const injectionCheck = detectPromptInjection(cleanUserMessage);
+    if (injectionCheck.isSuspicious) {
+      return NextResponse.json({
+        replyText: "I am an automated assistant dedicated to assisting you with your appointment or service enquiry. How can I assist you with scheduling or orders today?",
+        toolCallsExecuted: [],
+        extractedData: {},
+        detectedIntent: "Security guardrail triggered",
+        summary: "Potential prompt override attempt blocked by system safety guardrails.",
+        urgency: "normal",
+        actionPerformed: "Security guardrail active",
+        isComplete: false,
+        language: "en",
+      });
     }
 
     const business: Business | null = businessId 
@@ -37,9 +71,9 @@ export async function POST(req: NextRequest) {
       business,
       workflow,
       transcript: transcript as TranscriptMessage[],
-      latestUserMessage,
-      callerPhone,
-      callerName,
+      latestUserMessage: cleanUserMessage,
+      callerPhone: cleanCallerPhone,
+      callerName: cleanCallerName,
     });
 
     let savedRecordId: string | undefined;
@@ -48,7 +82,7 @@ export async function POST(req: NextRequest) {
         ...transcript,
         {
           role: "user",
-          message: latestUserMessage,
+          message: cleanUserMessage,
           timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }),
         },
         {
@@ -63,8 +97,8 @@ export async function POST(req: NextRequest) {
         workflow_id: workflow.id,
         business_name: business.name,
         workflow_name: workflow.name,
-        caller_name: callerName,
-        caller_phone: callerPhone,
+        caller_name: cleanCallerName,
+        caller_phone: cleanCallerPhone,
         status: "completed",
         intent: conversationResult.detectedIntent,
         collected_data: conversationResult.extractedData,

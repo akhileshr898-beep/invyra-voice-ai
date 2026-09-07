@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
 import { transcribeAudio, isDeepgramConfigured } from "@/lib/deepgram";
+import { checkRateLimit, validateAudioUpload } from "@/lib/security";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
+  // 1. Rate Limiting Protection (30 req/min)
+  const rateLimit = checkRateLimit(req, 30, 60000);
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: `Too many audio transcription requests. Please retry in ${rateLimit.resetInSec}s.` },
+      { status: 429, headers: { "Retry-After": String(rateLimit.resetInSec) } }
+    );
+  }
+
   try {
     const contentType = req.headers.get("content-type") || "";
     let audioBuffer: Buffer;
@@ -27,8 +37,10 @@ export async function POST(req: NextRequest) {
       mimeType = contentType || "audio/webm";
     }
 
-    if (!audioBuffer || audioBuffer.length === 0) {
-      return NextResponse.json({ error: "Empty audio payload" }, { status: 400 });
+    // 2. Audio Payload Validation (Size limit & MIME check)
+    const validation = validateAudioUpload(audioBuffer, mimeType, 10 * 1024 * 1024);
+    if (!validation.valid) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     if (!isDeepgramConfigured) {

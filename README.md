@@ -19,7 +19,7 @@
 | # | Requirement | Expected Location | Status | Verified Direct Link |
 |---|:---|:---|:---:|:---|
 | 1 | **GitHub Repository** | GitHub Link | ✅ Verified | [github.com/akhileshr898-beep/invyra-voice-ai](https://github.com/akhileshr898-beep/invyra-voice-ai) |
-| 2 | **Deployed Web Application** | Vercel Link | ✅ Ready | [invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) *(See [Vercel Deployment Guide](#-deployment-to-vercel))* |
+| 2 | **Deployed Web Application** | Vercel Link | ✅ Live | [invyra-voice-ai-git-main-akhilesh13.vercel.app](https://invyra-voice-ai-git-main-akhilesh13.vercel.app) |
 | 3 | **Setup Instructions** | `README.md` | ✅ Verified | [Local Setup & Installation Guide](#-local-setup--installation-guide) |
 | 4 | **Architecture Diagram** | README + `docs/architecture-diagram.png` | ✅ Verified | [docs/architecture-diagram.png](./docs/architecture-diagram.png) *(See [Architecture Section](#️-system-architecture--data-flow))* |
 | 5 | **Database Schema / Data Model** | README + `docs/database-schema.md` | ✅ Verified | [docs/database-schema.md](./docs/database-schema.md) *(See [Database Schema Section](#-database-schema--multi-tenancy))* |
@@ -36,7 +36,7 @@
 | **System Architecture Blueprint** | High-Resolution Component & Data Flow Diagram | [docs/architecture-diagram.png](./docs/architecture-diagram.png) |
 | **Database Schema & RLS** | Entity-Relationship Diagram, Tables & Constraints | [docs/database-schema.md](./docs/database-schema.md) |
 | **Visual Gallery** | Complete 11-Screenshot Product Tour | [docs/screenshots/](./docs/screenshots/) |
-| **Vercel Live App** | Production Web Application | [invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) |
+| **Vercel Live App** | Production Web Application | [invyra-voice-ai-git-main-akhilesh13.vercel.app](https://invyra-voice-ai-git-main-akhilesh13.vercel.app) |
 
 
 ---
@@ -498,7 +498,7 @@ Invyra.ai is production-ready and fully optimized for **Vercel Global Edge & Ser
 
 | Configuration | Setting |
 |:---|:---|
-| **Production URL** | [https://invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) |
+| **Production URL** | [https://invyra-voice-ai-git-main-akhilesh13.vercel.app](https://invyra-voice-ai-git-main-akhilesh13.vercel.app) |
 | **Framework Preset** | Next.js (App Router) |
 | **Node.js Runtime** | 18.x / 20.x |
 | **Build Command** | `npm run build` |

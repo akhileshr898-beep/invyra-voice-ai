@@ -105,6 +105,29 @@ export async function createBusiness(data: Omit<Business, "id" | "created_at">):
   return newBusiness;
 }
 
+export async function deleteBusiness(id: string): Promise<{ success: boolean; message?: string }> {
+  const store = ensureLocalStore();
+  if (store.businesses.length <= 1) {
+    throw new Error("Cannot remove the last remaining business profile. At least one profile is required.");
+  }
+
+  if (isSupabaseConfigured && supabase) {
+    await supabase.from("workflows").delete().eq("business_id", id);
+    await supabase.from("conversations").delete().eq("business_id", id);
+    const { error } = await supabase.from("businesses").delete().eq("id", id);
+    if (error) {
+      throw new Error(`Failed to delete business from Supabase: ${error.message}`);
+    }
+  }
+
+  store.businesses = store.businesses.filter((b) => b.id !== id);
+  store.workflows = store.workflows.filter((w) => w.business_id !== id);
+  store.conversations = store.conversations.filter((c) => c.business_id !== id);
+  saveLocalStore(store);
+
+  return { success: true };
+}
+
 // ---------------- WORKFLOWS ----------------
 
 export async function getWorkflows(businessId?: string): Promise<Workflow[]> {

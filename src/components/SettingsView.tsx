@@ -8,10 +8,24 @@ import {
   Calendar, 
   Key, 
   Copy, 
-  Check, 
+  Check,
+  Building2,
+  PlusCircle,
+  Trash2
 } from "lucide-react";
+import { Business } from "@/lib/types";
 
-export function SettingsView() {
+interface SettingsViewProps {
+  businesses?: Business[];
+  onDeleteBusiness?: (id: string) => Promise<void> | void;
+  onOpenNewBusinessModal?: () => void;
+}
+
+export function SettingsView({
+  businesses = [],
+  onDeleteBusiness,
+  onOpenNewBusinessModal,
+}: SettingsViewProps) {
   const [copied, setCopied] = useState(false);
 
   const envTemplate = `# AI & Voice
@@ -154,6 +168,98 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
           </div>
         </div>
 
+      </div>
+
+      {/* Configured Business Profiles Directory */}
+      <div className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+          <div>
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center">
+                <Building2 className="w-4 h-4" />
+              </div>
+              <h3 className="font-extrabold text-base text-slate-900">
+                Configured Business Profiles ({businesses?.length || 0})
+              </h3>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Active businesses receiving automated missed-call callbacks. You can add new profiles or remove existing ones.
+            </p>
+          </div>
+
+          {onOpenNewBusinessModal && (
+            <button
+              onClick={onOpenNewBusinessModal}
+              className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-xs active:scale-95 self-start sm:self-center"
+            >
+              <PlusCircle className="w-4 h-4" />
+              Add Business Profile
+            </button>
+          )}
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
+          {businesses?.map((biz) => {
+            const canDelete = businesses.length > 1;
+            return (
+              <div
+                key={biz.id}
+                className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-slate-300 transition"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-100/70 text-blue-800">
+                        {biz.industry}
+                      </span>
+                      <h4 className="font-bold text-sm text-slate-900 mt-1.5">{biz.name}</h4>
+                    </div>
+                    {onDeleteBusiness && (
+                      <button
+                        onClick={() => {
+                          if (!canDelete) {
+                            alert("Cannot remove the last remaining business profile. At least one profile is required.");
+                            return;
+                          }
+                          if (confirm(`Are you sure you want to remove "${biz.name}"?\n\nThis will also remove its associated workflows.`)) {
+                            onDeleteBusiness(biz.id);
+                          }
+                        }}
+                        className={`p-2 rounded-xl border transition ${
+                          canDelete
+                            ? "bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border-slate-200 hover:border-rose-200"
+                            : "bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed"
+                        }`}
+                        title={canDelete ? `Remove ${biz.name}` : "At least one business profile is required"}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+
+                  <div className="text-xs text-slate-500 mt-2 space-y-1 font-medium">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-slate-400">Phone:</span>
+                      <span className="font-mono text-slate-700">{biz.phone}</span>
+                    </div>
+                    {biz.operating_hours && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-slate-400">Hours:</span>
+                        <span className="text-slate-700 truncate">{biz.operating_hours}</span>
+                      </div>
+                    )}
+                    {biz.tone && (
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-slate-400">Tone:</span>
+                        <span className="text-slate-700 italic truncate">{biz.tone}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Environment Variable Template */}

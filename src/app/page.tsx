@@ -57,6 +57,29 @@ export default function Home() {
     fetchData();
   };
 
+  const handleBusinessDeleted = async (bizId: string) => {
+    try {
+      const res = await fetch(`/api/businesses?id=${bizId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Failed to remove business.");
+        return;
+      }
+
+      const remaining = businesses.filter((b) => b.id !== bizId);
+      setBusinesses(remaining);
+      if (selectedBusiness?.id === bizId && remaining.length > 0) {
+        setSelectedBusiness(remaining[0]);
+      }
+      fetchData();
+    } catch (err) {
+      console.error("Failed to delete business:", err);
+      alert("Error removing business profile.");
+    }
+  };
+
   const handleWorkflowSaved = (savedWf: Workflow) => {
     setWorkflows((prev) => {
       const idx = prev.findIndex((w) => w.id === savedWf.id);
@@ -91,6 +114,7 @@ export default function Home() {
         selectedBusiness={selectedBusiness}
         onSelectBusiness={setSelectedBusiness}
         onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
+        onDeleteBusiness={handleBusinessDeleted}
       />
 
       {/* Main Tab Content */}
@@ -121,7 +145,13 @@ export default function Home() {
 
         {activeTab === "calendar" && <CalendarView />}
 
-        {activeTab === "settings" && <SettingsView />}
+        {activeTab === "settings" && (
+          <SettingsView
+            businesses={businesses}
+            onDeleteBusiness={handleBusinessDeleted}
+            onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
+          />
+        )}
       </main>
 
       {/* Business Profile Creation Modal */}

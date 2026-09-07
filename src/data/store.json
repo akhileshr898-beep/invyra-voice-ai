@@ -7,6 +7,32 @@
       "timezone": "America/New_York",
       "operating_hours": "Tue-Sun 8AM-8PM",
       "tone": "Warm and cheerful",
+      "owner_user_id": "u-1788793983378-5x0vn",
+      "owner_name": "Chef Bella Tenant B",
+      "email": "baker.bella.1788793982623@testbakery.com",
+      "id": "b-1788793983625-yi0r",
+      "created_at": "2026-09-07T15:13:03.625Z"
+    },
+    {
+      "name": "Test Tenant A Clinic",
+      "industry": "Clinic & Healthcare",
+      "phone": "+1 (555) 111-0001",
+      "timezone": "America/New_York",
+      "operating_hours": "Mon-Fri 9AM-5PM",
+      "tone": "Medical and empathetic",
+      "owner_user_id": "u-1788793983276-5e177",
+      "owner_name": "Dr. Sharma Tenant A",
+      "email": "doctor.sharma.1788793982623@testclinic.com",
+      "id": "b-1788793983598-0mga",
+      "created_at": "2026-09-07T15:13:03.598Z"
+    },
+    {
+      "name": "Test Tenant B Bakery",
+      "industry": "Bakery & Cake Shop",
+      "phone": "+1 (555) 222-0002",
+      "timezone": "America/New_York",
+      "operating_hours": "Tue-Sun 8AM-8PM",
+      "tone": "Warm and cheerful",
       "owner_user_id": "u-1788792253382-48j0f",
       "owner_name": "Chef Bella Tenant B",
       "email": "baker.bella.1788792252705@testbakery.com",
@@ -102,6 +128,15 @@
     }
   ],
   "workflows": [
+    {
+      "business_id": "b-1788793983598-0mga",
+      "name": "Owner A Private Medical Triage",
+      "trigger": "missed_call",
+      "greeting": "Hello, this is Tenant A Clinic.",
+      "fields_schema": [],
+      "id": "wf-1788793983696-3vam",
+      "created_at": "2026-09-07T15:13:03.696Z"
+    },
     {
       "business_id": "b-1788792253674-w3xl",
       "name": "Owner A Private Medical Triage",
@@ -296,6 +331,91 @@
     }
   ],
   "conversations": [
+    {
+      "business_id": "b-bakery-002",
+      "workflow_id": "wf-cake-order",
+      "business_name": "Sweet Delights Artisan Cake Studio",
+      "workflow_name": "Cake Studio Missed Call - Custom Order & Inquiry",
+      "caller_name": "Priya Sengupta",
+      "caller_phone": "+1 (555) 345-6789",
+      "status": "completed",
+      "intent": "Custom Belgian Chocolate Truffle cake order inquiry",
+      "collected_data": {
+        "caller_phone": "+1 (555) 345-6789",
+        "caller_name": "Priya Sengupta",
+        "cake_type": "Birthday",
+        "flavor": "Belgian Chocolate Truffle",
+        "weight_kg": "2 kg",
+        "fulfillment_type": "Store Pickup"
+      },
+      "summary": "Priya Sengupta contacted Sweet Delights Artisan Cake Studio regarding: Custom Belgian Chocolate Truffle cake order inquiry. Result: Urgent Kitchen Notification & Order Enquiry Logged.",
+      "action_performed": "Urgent Kitchen Notification & Order Enquiry Logged",
+      "priority": "urgent",
+      "follow_up_status": "pending",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hi there! This is Sweet Delights Cake Studio returning your call. Are you interested in placing a custom cake order, or did you have a quick question about our menu?",
+          "timestamp": "11:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I need a 2kg Belgian chocolate truffle cake for a birthday today evening",
+          "timestamp": "08:43:23 pm"
+        },
+        {
+          "role": "assistant",
+          "message": "Delightful! I have recorded your order for a 2 kg Belgian Chocolate Truffle cake. Since it is needed within 24 hours, our kitchen team has marked it as URGENT priority!",
+          "timestamp": "08:43:23 pm"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788794003054-u53g",
+      "created_at": "2026-09-07T15:13:23.054Z",
+      "updated_at": "2026-09-07T15:13:23.054Z"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "workflow_id": "wf-clinic-booking",
+      "business_name": "Apex Care Multi-Specialty Clinic",
+      "workflow_name": "Clinic Missed Call - Appointment Booking & Rescheduling",
+      "caller_name": "Aarav Gupta",
+      "caller_phone": "+1 (555) 987-6543",
+      "status": "completed",
+      "intent": "Schedule medical consultation with Dr. Sharma",
+      "collected_data": {
+        "caller_phone": "+1 (555) 987-6543",
+        "caller_name": "Aarav Gupta",
+        "doctor_specialty": "Cardiology",
+        "preferred_date": "Tomorrow",
+        "preferred_time": "16:00"
+      },
+      "summary": "Aarav Gupta contacted Apex Care Multi-Specialty Clinic regarding: Schedule medical consultation with Dr. Sharma. Result: Google Calendar Event Booked: Tomorrow at 4:00 PM.",
+      "action_performed": "Google Calendar Event Booked: Tomorrow at 4:00 PM",
+      "priority": "normal",
+      "follow_up_status": "completed",
+      "transcript": [
+        {
+          "role": "assistant",
+          "message": "Hello! This is Apex Care Medical Centre calling you back after missing your call. Are you calling to book a new appointment, reschedule, or inquire about clinic hours?",
+          "timestamp": "10:00:00 AM"
+        },
+        {
+          "role": "user",
+          "message": "I want to schedule an appointment with Dr. Sharma tomorrow at 4 PM",
+          "timestamp": "08:43:22 pm"
+        },
+        {
+          "role": "assistant",
+          "message": "Wonderful! I have verified availability and booked your appointment with Dr. Sharma for tomorrow at 4:00 PM on our Google Calendar. An SMS confirmation is on its way.",
+          "timestamp": "08:43:22 pm"
+        }
+      ],
+      "language": "en",
+      "id": "conv-1788794002907-1qc8",
+      "created_at": "2026-09-07T15:13:22.907Z",
+      "updated_at": "2026-09-07T15:13:23.094Z"
+    },
     {
       "business_id": "b-bakery-002",
       "workflow_id": "wf-cake-order",
@@ -1363,6 +1483,20 @@
       "status": "confirmed",
       "id": "cal-1788792219798-7t2c",
       "created_at": "2026-09-07T14:43:39.799Z"
+    },
+    {
+      "business_id": "b-clinic-001",
+      "title": "Clinic Appointment - Aarav Gupta",
+      "start_time": "2026-09-08T10:30:00.000Z",
+      "end_time": "2026-09-08T11:15:00.000Z",
+      "attendee_name": "Aarav Gupta",
+      "attendee_phone": "+1 (555) 987-6543",
+      "doctor_or_service": "Dr. Sharma (Cardiology)",
+      "notes": "Consultation booked via Voice Assistant callback.",
+      "google_event_id": "gcal_mock_1788794002695",
+      "status": "confirmed",
+      "id": "cal-1788794002695-twhj",
+      "created_at": "2026-09-07T15:13:22.695Z"
     }
   ],
   "users": [
@@ -1421,6 +1555,22 @@
       "salt": "6fbcde60ad212045322747c8b5f20641",
       "id": "u-1788792253382-48j0f",
       "created_at": "2026-09-07T14:44:13.382Z"
+    },
+    {
+      "email": "doctor.sharma.1788793982623@testclinic.com",
+      "owner_name": "Dr. Sharma Tenant A",
+      "password_hash": "5fc879f9a6d870905326de5e24eef0a71d5693b4359639efb5e3a77bbb123d068ac1f409bf321aa70e645089717bb8d815063a310d8ba8b771c9388104bb3626",
+      "salt": "f2f42b3d58651814a42249d823ea95be",
+      "id": "u-1788793983276-5e177",
+      "created_at": "2026-09-07T15:13:03.276Z"
+    },
+    {
+      "email": "baker.bella.1788793982623@testbakery.com",
+      "owner_name": "Chef Bella Tenant B",
+      "password_hash": "23674420063ee3ab921307dd9926e7a0973c798954d88ff8832e88ac82fd036262d3461f22054514642163fb36a4ec5a2dfb9da71a92dceccff4546a1d13e926",
+      "salt": "c3a11b1f3b2bb53c14d10fedd8fb0e1e",
+      "id": "u-1788793983378-5x0vn",
+      "created_at": "2026-09-07T15:13:03.378Z"
     }
   ]
 }

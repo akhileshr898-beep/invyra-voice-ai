@@ -157,7 +157,7 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col">
+    <div className="min-h-screen bg-transparent text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
       {/* Top Sticky Header */}
       <Navbar
         activeTab={activeTab}
@@ -216,11 +216,11 @@ export default function Home() {
       />
 
       {/* Footer */}
-      <footer className="border-t border-slate-200 bg-white/70 py-4 px-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-800/80 bg-slate-950/70 backdrop-blur-xl py-4 px-6 text-center text-xs text-slate-400">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Invyra Voice AI &bull; Mobile-First Voice Personal Assistant</span>
-          <span className="text-[11px] text-slate-400">
-            Next.js &bull; Serverless Functions &bull; Deepgram (Nova-2 & Aura) &bull; Gemini Tool Calling &bull; Google Calendar &bull; Multi-Tenant Isolation
+          <span className="font-medium text-slate-300">Invyra Voice AI &bull; Autonomous Enterprise Voice Receptionist</span>
+          <span className="text-[11px] text-slate-500">
+            Next.js &bull; Serverless Functions &bull; Deepgram (Nova-2 & Aura) &bull; Gemini 1.5 Tool Calling &bull; Google Calendar &bull; Multi-Tenant Isolation
           </span>
         </div>
       </footer>

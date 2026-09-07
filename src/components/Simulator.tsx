@@ -78,28 +78,44 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
   // Preset caller test identities
   const CALLER_PRESETS = [
     { 
-      name: "Eleanor Vance", 
-      phone: "+1 (555) 438-9201", 
-      initials: "EV",
-      label: "Eleanor (Clinic Patient)", 
-      request: "Dermatology Consultation",
-      lang: "en" as const 
-    },
-    { 
-      name: "Marcus Lee", 
-      phone: "+1 (555) 729-1144", 
-      initials: "ML",
-      label: "Marcus (Urgent Cake Order)", 
-      request: "2kg Belgian Chocolate Truffle Cake",
-      lang: "en" as const 
-    },
-    { 
       name: "Aarav Gupta", 
       phone: "+91 98765 43210", 
       initials: "AG",
-      label: "Aarav (हिन्दी Caller)", 
-      request: "डॉक्टर अपॉइंटमेंट (कल सुबह)",
+      label: "Aarav (हिन्दी - डॉक्टर अपॉइंटमेंट)", 
+      request: "डॉ. शर्मा के साथ कल सुबह 10:30 बजे अपॉइंटमेंट",
       lang: "hi" as const 
+    },
+    { 
+      name: "Priya Sharma", 
+      phone: "+91 98201 12345", 
+      initials: "PS",
+      label: "Priya (Cardiology Consultation)", 
+      request: "Cardiology follow-up with Dr. Sharma",
+      lang: "en" as const 
+    },
+    { 
+      name: "Rohan Mehta", 
+      phone: "+91 98112 54321", 
+      initials: "RM",
+      label: "Rohan (Urgent Birthday Cake)", 
+      request: "2kg Belgian Chocolate Truffle Cake for tonight",
+      lang: "en" as const 
+    },
+    { 
+      name: "Ananya Iyer", 
+      phone: "+91 98450 67890", 
+      initials: "AI",
+      label: "Ananya (Routine Health Checkup)", 
+      request: "General wellness checkup slot",
+      lang: "en" as const 
+    },
+    { 
+      name: "Vikram Malhotra", 
+      phone: "+91 99887 76655", 
+      initials: "VM",
+      label: "Vikram (Dispatch & Tracking)", 
+      request: "Priority delivery tracking status",
+      lang: "en" as const 
     },
   ];
 
@@ -666,7 +682,7 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
                 </div>
                 <div className="font-bold text-slate-700 text-xs">Waiting for Call Initialization</div>
                 <div className="text-[11px] text-slate-400 max-w-xs mt-1">
-                  Click <strong>"Simulate Missed Call Callback"</strong> to begin live transcription.
+                  Click <strong>&quot;Simulate Missed Call Callback&quot;</strong> to begin live transcription.
                 </div>
               </div>
             ) : (

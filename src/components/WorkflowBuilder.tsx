@@ -352,7 +352,7 @@ export function WorkflowBuilder({
                     <div>
                       <div className="font-bold text-sm text-slate-900">Manual / Web Simulator Trigger</div>
                       <div className="text-xs text-slate-500 mt-1 leading-relaxed">
-                        Testable anytime by clicking "Simulate Missed Call Callback" in the Voice Simulator tab.
+                        Testable anytime by clicking &quot;Simulate Missed Call Callback&quot; in the Voice Simulator tab.
                       </div>
                     </div>
                   </div>
@@ -407,7 +407,7 @@ export function WorkflowBuilder({
                 <div className="text-xs text-slate-700 space-y-1 leading-relaxed">
                   <strong className="font-bold text-slate-900">Bilingual English & Hindi Adaptation</strong>
                   <p>
-                    Gemini AI automatically detects the caller's spoken language. If they greet in Hindi (e.g., <em>"नमस्ते, डॉक्टर से मिलना है"</em>), the assistant adapts naturally into Hindi without losing any appointment booking context.
+                    Gemini AI automatically detects the caller&apos;s spoken language. If they greet in Hindi (e.g., <em>&quot;नमस्ते, डॉक्टर से मिलना है&quot;</em>), the assistant adapts naturally into Hindi without losing any appointment booking context.
                   </p>
                 </div>
               </div>

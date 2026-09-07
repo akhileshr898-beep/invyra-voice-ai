@@ -88,6 +88,13 @@ export default function Home() {
 
   useEffect(() => {
     loadUserAndBusinesses();
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get("tab");
+      if (tabParam && ["simulator", "dashboard", "workflows", "calendar", "settings"].includes(tabParam)) {
+        setActiveTab(tabParam as any);
+      }
+    }
   }, [loadUserAndBusinesses]);
 
   const handleSelectBusiness = (biz: Business) => {
@@ -229,8 +236,15 @@ export default function Home() {
           {activeTab === "settings" && (
             <SettingsView
               businesses={businesses}
+              selectedBusiness={selectedBusiness}
+              currentUser={currentUser}
+              onBusinessUpdated={(updated) => {
+                setSelectedBusiness(updated);
+                setBusinesses((prev) => prev.map((b) => (b.id === updated.id ? updated : b)));
+              }}
               onDeleteBusiness={handleBusinessDeleted}
               onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
+              onSignOut={handleLogout}
             />
           )}
 

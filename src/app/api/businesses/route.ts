@@ -53,6 +53,44 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export async function PATCH(req: NextRequest) {
+  try {
+    const session = getAuthenticatedSession(req);
+    if (!session || !session.userId) {
+      return NextResponse.json(
+        { error: "Authentication required. Please log in." },
+        { status: 401 }
+      );
+    }
+
+    const body = await req.json();
+    if (!body.id) {
+      return NextResponse.json({ error: "Missing business ID to update" }, { status: 400 });
+    }
+
+    // Tenant-isolated update: user can only update businesses where owner_user_id === session.userId
+    const updated = await db.updateBusiness(
+      body.id,
+      {
+        name: body.name,
+        phone: body.phone,
+        industry: body.industry,
+        operating_hours: body.operating_hours,
+        business_address: body.business_address,
+        preferred_language: body.preferred_language,
+        timezone: body.timezone,
+        google_calendar_connected: body.google_calendar_connected,
+      },
+      session.userId
+    );
+
+    return NextResponse.json({ business: updated }, { status: 200 });
+  } catch (error: any) {
+    const status = error.message?.includes("Forbidden") ? 403 : 400;
+    return NextResponse.json({ error: error.message }, { status });
+  }
+}
+
 export async function DELETE(req: NextRequest) {
   try {
     const session = getAuthenticatedSession(req);

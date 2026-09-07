@@ -331,6 +331,45 @@ export async function createBusiness(data: Omit<Business, "id" | "created_at">):
   return newBusiness;
 }
 
+export async function updateBusiness(
+  id: string,
+  updates: Partial<Omit<Business, "id" | "owner_user_id" | "created_at">>,
+  ownerUserId: string
+): Promise<Business> {
+  const store = ensureLocalStore();
+  const index = store.businesses.findIndex((b) => b.id === id);
+  if (index === -1) {
+    throw new Error("Business not found.");
+  }
+
+  const business = store.businesses[index];
+  if (business.owner_user_id !== ownerUserId) {
+    throw new Error("Forbidden: You do not have permission to update this business.");
+  }
+
+  const updated: Business = {
+    ...business,
+    ...updates,
+    id: business.id, // Immutable
+    owner_user_id: business.owner_user_id, // Immutable
+  };
+
+  if (isSupabaseConfigured && supabase) {
+    const { error } = await supabase
+      .from("businesses")
+      .update(updates)
+      .eq("id", id)
+      .eq("owner_user_id", ownerUserId);
+    if (error) {
+      console.warn("Supabase business update failed, persisting locally:", error);
+    }
+  }
+
+  store.businesses[index] = updated;
+  saveLocalStore(store);
+  return updated;
+}
+
 export async function deleteBusiness(id: string, ownerUserId?: string): Promise<{ success: boolean; message?: string }> {
   const store = ensureLocalStore();
   const business = store.businesses.find((b) => b.id === id);

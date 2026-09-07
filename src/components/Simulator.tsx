@@ -16,7 +16,14 @@ import {
   Wrench,
   Bot,
   User,
-  Info
+  Info,
+  Signal,
+  Wifi,
+  Battery,
+  Sparkles,
+  PhoneForwarded,
+  ShieldAlert,
+  Clock
 } from "lucide-react";
 import { Business, Workflow, TranscriptMessage } from "@/lib/types";
 
@@ -27,7 +34,6 @@ interface SimulatorProps {
 }
 
 export function Simulator({ business, workflows, onConversationFinished }: SimulatorProps) {
-  // Active workflow
   const activeWorkflow = workflows.find((w) => w.business_id === business.id) || workflows[0];
 
   // Call States
@@ -57,12 +63,10 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Scroll to bottom of chat
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [transcript, isAgentThinking, isPlayingTTS]);
 
-  // Call duration counter
   useEffect(() => {
     if (callState === "connected") {
       timerIntervalRef.current = setInterval(() => {
@@ -77,14 +81,12 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     };
   }, [callState]);
 
-  // Format seconds to mm:ss
   const formatTime = (secs: number) => {
     const mins = Math.floor(secs / 60);
     const s = secs % 60;
     return `${mins.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
-  // Play audio response using Deepgram TTS
   const playTTSAudio = async (text: string) => {
     if (isMuted) return;
     try {
@@ -104,7 +106,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
       if (contentType.includes("application/json")) {
         const json = await res.json();
         if (json.isSimulated) {
-          setApiNotice("Deepgram Voice: Audio playback ready when DEEPGRAM_API_KEY is supplied. Displaying text reply.");
+          setApiNotice("Deepgram Voice: Running in simulation mode until DEEPGRAM_API_KEY is supplied. Displaying text reply.");
         }
         setIsPlayingTTS(false);
         return;
@@ -125,14 +127,12 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }
   };
 
-  // Start Call (Simulate incoming missed-call callback)
   const startCall = async () => {
     setCallState("calling");
     setTranscript([]);
     setLatestTools([]);
     setApiNotice(null);
 
-    // Simulate ringtone delay of 1.2s then connect
     setTimeout(() => {
       setCallState("connected");
       const greeting = activeWorkflow?.greeting || 
@@ -151,7 +151,6 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }, 1200);
   };
 
-  // End Call
   const endCall = () => {
     setCallState("ended");
     if (mediaRecorderRef.current && isRecording) {
@@ -167,7 +166,6 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }
   };
 
-  // Microphone Recording: MediaRecorder -> /api/voice/stt (Deepgram Nova-2)
   const startMicrophoneRecording = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -191,7 +189,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
       setIsRecording(true);
     } catch (err: any) {
       console.error("Microphone access error:", err);
-      alert("Could not access microphone. Please grant browser microphone permissions, or use text chat below!");
+      alert("Could not access microphone. Please allow microphone permissions, or type below!");
     }
   };
 
@@ -202,7 +200,6 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }
   };
 
-  // Send recorded audio to Deepgram Nova-2 STT
   const processRecordedAudio = async (audioBlob: Blob) => {
     setIsProcessingSTT(true);
     try {
@@ -224,7 +221,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
         if (data.warning) {
           setApiNotice(data.warning);
         } else {
-          alert("Deepgram did not capture any speech. Please try speaking again or type in the box.");
+          alert("Deepgram did not capture any speech. Please try speaking again or use text input.");
         }
       }
     } catch (err) {
@@ -233,7 +230,6 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }
   };
 
-  // Send text message to Gemini AI conversation turn
   const sendMessageToAI = async (messageText: string) => {
     if (!messageText.trim() || callState !== "connected") return;
 
@@ -288,7 +284,6 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     }
   };
 
-  // Sample prompt buttons
   const isClinic = business.industry.toLowerCase().includes("clinic") || business.name.toLowerCase().includes("care");
   const promptSuggestions = isClinic
     ? [
@@ -308,43 +303,43 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
     <div className="max-w-4xl mx-auto space-y-6">
       <audio ref={audioElementRef} className="hidden" />
 
-      {/* Top Banner: Workflow Info & Caller Customization */}
-      <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      {/* Top Banner with Human Design Touches */}
+      <div className="glass-card rounded-3xl p-6 border border-slate-200/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full">
+            <span className="text-xs font-bold px-3 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-full shadow-xs">
               {business.industry}
             </span>
-            <span className="text-xs font-medium text-slate-500">
-              Workflow: <span className="font-semibold text-slate-800">{activeWorkflow?.name || "Standard Callback"}</span>
+            <span className="text-xs text-slate-500 font-medium">
+              Active Workflow: <strong className="text-slate-800">{activeWorkflow?.name || "Standard Callback"}</strong>
             </span>
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mt-1">
-            Voice AI Missed-Call Simulator
+          <h2 className="text-2xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            Autonomous Voice Callback Simulator
           </h2>
-          <p className="text-xs text-slate-500">
-            Microphone audio processed with <strong className="text-slate-700">Deepgram Nova-2 (STT)</strong> &bull; Voice responses via <strong className="text-slate-700">Deepgram Aura (TTS)</strong> &bull; Reasoning via <strong className="text-slate-700">Gemini Tool Calling</strong>
+          <p className="text-xs text-slate-500 mt-1 max-w-2xl leading-relaxed">
+            Experience the automated missed-call callback as a customer. Speech processed via <strong className="text-slate-700">Deepgram Nova-2 (STT)</strong>, reasoned with <strong className="text-slate-700">Gemini 1.5 Tool Calling</strong>, and spoken via <strong className="text-slate-700">Deepgram Aura (TTS)</strong>.
           </p>
         </div>
 
-        {/* Language & Caller Controls */}
-        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          <div className="flex items-center gap-1.5 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 text-xs">
-            <Languages className="w-3.5 h-3.5 text-slate-600" />
+        {/* Language Selector Pill */}
+        <div className="flex items-center gap-2 w-full sm:w-auto self-start sm:self-center">
+          <div className="flex items-center gap-1.5 bg-slate-100/90 px-3 py-1.5 rounded-2xl border border-slate-200 text-xs font-semibold">
+            <Languages className="w-3.5 h-3.5 text-blue-600" />
             <select
               value={selectedLanguage}
               onChange={(e) => setSelectedLanguage(e.target.value as any)}
-              className="bg-transparent border-none outline-none text-slate-800 font-medium cursor-pointer"
+              className="bg-transparent border-none outline-none text-slate-800 font-semibold cursor-pointer"
             >
-              <option value="en">English (US/UK)</option>
-              <option value="hi">हिन्दी (Hindi)</option>
-              <option value="auto">Auto-Detect</option>
+              <option value="en">🇺🇸 English</option>
+              <option value="hi">🇮🇳 हिन्दी (Hindi)</option>
+              <option value="auto">✨ Auto-Detect</option>
             </select>
           </div>
 
           <button
             onClick={() => setIsMuted(!isMuted)}
-            className={`p-2 rounded-xl border text-xs flex items-center gap-1 transition ${
+            className={`p-2.5 rounded-2xl border text-xs font-semibold flex items-center gap-1 transition ${
               isMuted ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200"
             }`}
             title={isMuted ? "Audio Unmute" : "Audio Mute"}
@@ -355,45 +350,69 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
       </div>
 
       {apiNotice && (
-        <div className="bg-amber-50 border border-amber-200 rounded-xl p-3.5 flex items-start gap-2.5 text-xs text-amber-800">
+        <div className="bg-amber-50/90 border border-amber-200/90 rounded-2xl p-4 flex items-start gap-3 text-xs text-amber-900 shadow-xs">
           <Info className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-          <div className="flex-1">
-            <strong>System Notice:</strong> {apiNotice}
+          <div className="flex-1 leading-relaxed">
+            <strong className="font-bold">Operational Note:</strong> {apiNotice}
           </div>
-          <button onClick={() => setApiNotice(null)} className="text-amber-600 hover:text-amber-800 font-bold">✕</button>
+          <button onClick={() => setApiNotice(null)} className="text-amber-600 hover:text-amber-900 font-bold px-1">✕</button>
         </div>
       )}
 
-      {/* Main Call Simulator Console */}
-      <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+      {/* Main Smartphone Telephony Console */}
+      <div className="bg-white rounded-[2rem] border border-slate-200/90 shadow-2xl overflow-hidden ring-1 ring-black/5">
         
-        {/* Call Header Bar */}
-        <div className="bg-slate-900 text-white px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className={`w-3 h-3 rounded-full ${
-              callState === "connected" ? "bg-emerald-400 animate-ping" : callState === "calling" ? "bg-amber-400 animate-pulse" : "bg-slate-500"
-            }`} />
+        {/* Smartphone Hardware Style Top Status Bar */}
+        <div className="bg-slate-950 px-6 py-2.5 flex items-center justify-between text-slate-400 text-[11px] font-mono select-none">
+          <div className="flex items-center gap-2">
+            <Signal className="w-3.5 h-3.5 text-slate-300" />
+            <span className="font-sans font-semibold text-slate-300">Invyra Telecom</span>
+            <span>&bull;</span>
+            <span className="text-[10px] bg-blue-900/60 text-blue-300 px-1.5 py-0.2 rounded font-sans font-bold">5G Ultra</span>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <Wifi className="w-3.5 h-3.5 text-slate-300" />
+            <span className="font-sans font-semibold text-slate-200">{new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+            <Battery className="w-4 h-4 text-emerald-400" />
+          </div>
+        </div>
+
+        {/* Call Management Bar */}
+        <div className="bg-slate-900 text-white px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800">
+          <div className="flex items-center gap-3.5">
+            <div className={`w-11 h-11 rounded-2xl flex items-center justify-center font-bold text-white shadow-md ${
+              callState === "connected"
+                ? "bg-gradient-to-tr from-emerald-600 to-teal-500 shadow-emerald-500/20 ring-4 ring-emerald-500/20"
+                : callState === "calling"
+                ? "bg-gradient-to-tr from-amber-500 to-yellow-400 shadow-amber-500/20 animate-pulse"
+                : "bg-slate-800 text-slate-400"
+            }`}>
+              {callState === "connected" ? <PhoneCall className="w-5 h-5 animate-pulse" /> : <PhoneForwarded className="w-5 h-5" />}
+            </div>
+
             <div>
-              <div className="font-semibold text-sm">
-                {callState === "connected" ? `In Call with ${business.name}` : callState === "calling" ? "Connecting Missed-Call Callback..." : "Simulator Inactive"}
-              </div>
-              <div className="text-xs text-slate-400 flex items-center gap-2">
-                <span>Caller: {callerName} ({callerPhone})</span>
+              <div className="font-bold text-base flex items-center gap-2">
+                <span>{callState === "connected" ? business.name : callState === "calling" ? "Outbound Callback Connecting..." : "Assistant On Standby"}</span>
                 {callState === "connected" && (
-                  <span className="text-emerald-400 font-mono font-bold">
-                    &bull; {formatTime(callDuration)}
+                  <span className="text-xs font-mono font-bold bg-emerald-950 text-emerald-400 border border-emerald-800/80 px-2 py-0.5 rounded-full">
+                    {formatTime(callDuration)}
                   </span>
                 )}
+              </div>
+              <div className="text-xs text-slate-400 flex items-center gap-2 mt-0.5 font-medium">
+                <span>Caller: {callerName}</span>
+                <span>&bull;</span>
+                <span className="font-mono text-slate-300">{callerPhone}</span>
               </div>
             </div>
           </div>
 
-          {/* Call / Hangup Actions */}
+          {/* Action Trigger Buttons */}
           <div>
             {callState === "idle" || callState === "ended" ? (
               <button
                 onClick={startCall}
-                className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-lg shadow-emerald-600/30 transition active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-lg shadow-emerald-600/30 transition-all active:scale-95"
               >
                 <PhoneCall className="w-4 h-4" />
                 Simulate Missed Call Callback
@@ -401,65 +420,76 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
             ) : (
               <button
                 onClick={endCall}
-                className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-500 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-lg shadow-rose-600/30 transition active:scale-95"
+                className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-lg shadow-rose-600/30 transition-all active:scale-95"
               >
                 <PhoneOff className="w-4 h-4" />
-                Hang Up Call
+                End Call
               </button>
             )}
           </div>
         </div>
 
-        {/* Live Visualizer Bar when Connected */}
+        {/* Live Audio Equalizer / Visualizer Bar */}
         {callState === "connected" && (
-          <div className="bg-slate-950 px-6 py-3 flex items-center justify-between border-b border-slate-800">
+          <div className="bg-slate-950 px-6 py-3.5 flex items-center justify-between border-b border-slate-800/80">
             <div className="flex items-center gap-3">
               {isPlayingTTS ? (
                 <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-6 bg-teal-400 rounded-full animate-wave" style={{ animationDelay: "0ms" }} />
-                  <div className="w-1.5 h-8 bg-blue-400 rounded-full animate-wave" style={{ animationDelay: "150ms" }} />
-                  <div className="w-1.5 h-5 bg-indigo-400 rounded-full animate-wave" style={{ animationDelay: "300ms" }} />
-                  <div className="w-1.5 h-7 bg-purple-400 rounded-full animate-wave" style={{ animationDelay: "450ms" }} />
-                  <span className="text-xs text-teal-300 font-medium ml-2">Voice AI Speaking (Deepgram Aura)...</span>
+                  <div className="w-1.5 h-6 bg-teal-400 rounded-full wave-bar-1" />
+                  <div className="w-1.5 h-8 bg-blue-400 rounded-full wave-bar-2" />
+                  <div className="w-1.5 h-5 bg-indigo-400 rounded-full wave-bar-3" />
+                  <div className="w-1.5 h-7 bg-purple-400 rounded-full wave-bar-2" />
+                  <div className="w-1.5 h-4 bg-teal-300 rounded-full wave-bar-1" />
+                  <span className="text-xs text-teal-300 font-semibold ml-2 flex items-center gap-1">
+                    <Volume2 className="w-3.5 h-3.5 animate-pulse" />
+                    Deepgram Aura Speaking...
+                  </span>
                 </div>
               ) : isRecording ? (
                 <div className="flex items-center gap-1.5">
-                  <div className="w-1.5 h-6 bg-rose-400 rounded-full animate-wave" style={{ animationDelay: "0ms" }} />
-                  <div className="w-1.5 h-8 bg-amber-400 rounded-full animate-wave" style={{ animationDelay: "150ms" }} />
-                  <div className="w-1.5 h-5 bg-red-400 rounded-full animate-wave" style={{ animationDelay: "300ms" }} />
-                  <span className="text-xs text-rose-300 font-medium ml-2">Listening to your microphone...</span>
+                  <div className="w-1.5 h-6 bg-rose-400 rounded-full wave-bar-1" />
+                  <div className="w-1.5 h-8 bg-amber-400 rounded-full wave-bar-2" />
+                  <div className="w-1.5 h-5 bg-red-400 rounded-full wave-bar-3" />
+                  <span className="text-xs text-rose-300 font-semibold ml-2 flex items-center gap-1">
+                    <Mic className="w-3.5 h-3.5 animate-pulse" />
+                    Listening to your microphone...
+                  </span>
                 </div>
               ) : isAgentThinking ? (
-                <div className="flex items-center gap-2 text-xs text-blue-300">
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                <div className="flex items-center gap-2 text-xs text-blue-300 font-semibold">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-blue-400" />
                   <span>Gemini Reasoning & Executing Tools...</span>
                 </div>
               ) : isProcessingSTT ? (
-                <div className="flex items-center gap-2 text-xs text-amber-300">
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Deepgram Nova-2 Transcribing Voice...</span>
+                <div className="flex items-center gap-2 text-xs text-amber-300 font-semibold">
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-400" />
+                  <span>Deepgram Nova-2 Transcribing...</span>
                 </div>
               ) : (
-                <span className="text-xs text-slate-400">Ready for voice input or text message</span>
+                <div className="flex items-center gap-2 text-xs text-slate-400 font-medium">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  <span>Audio Channel Open &bull; Speak or type below</span>
+                </div>
               )}
             </div>
 
-            <div className="text-[11px] text-slate-400 hidden sm:block">
-              Zero Browser Speech APIs &bull; Serverless Native
+            <div className="text-[11px] font-mono text-slate-400 hidden sm:flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-teal-400"></span>
+              Serverless Audio Stream
             </div>
           </div>
         )}
 
-        {/* Conversation Feed */}
-        <div className="h-96 sm:h-[420px] overflow-y-auto p-5 space-y-4 bg-slate-50/50">
+        {/* Conversation Dialog Feed */}
+        <div className="h-96 sm:h-[430px] overflow-y-auto p-6 space-y-4 bg-gradient-to-b from-slate-50/70 to-slate-100/40">
           {transcript.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3">
+            <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-400 select-none">
+              <div className="w-16 h-16 rounded-3xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center mb-3.5 shadow-sm">
                 <PhoneCall className="w-7 h-7" />
               </div>
-              <h3 className="font-semibold text-slate-700 text-sm">Simulator Ready</h3>
-              <p className="text-xs max-w-sm mt-1 text-slate-500">
-                Click <strong className="text-slate-800">"Simulate Missed Call Callback"</strong> above to launch the interactive voice agent for {business.name}.
+              <h3 className="font-bold text-slate-800 text-base">Voice Assistant Ready</h3>
+              <p className="text-xs max-w-sm mt-1.5 text-slate-500 leading-relaxed">
+                Click <strong className="text-slate-800">"Simulate Missed Call Callback"</strong> above to begin your interactive conversation for {business.name}.
               </p>
             </div>
           ) : (
@@ -470,7 +500,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
               if (isSystem) {
                 return (
                   <div key={idx} className="text-center my-2">
-                    <span className="text-[11px] bg-slate-200 text-slate-600 px-3 py-1 rounded-full">
+                    <span className="text-[11px] bg-slate-200/90 text-slate-700 font-semibold px-3 py-1 rounded-full shadow-2xs">
                       {item.message}
                     </span>
                   </div>
@@ -480,42 +510,42 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
               return (
                 <div key={idx} className={`flex gap-3 ${isUser ? "justify-end" : "justify-start"}`}>
                   {!isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
                       <Bot className="w-4 h-4" />
                     </div>
                   )}
 
                   <div className={`max-w-[85%] sm:max-w-[75%] space-y-1.5`}>
                     <div
-                      className={`p-3.5 rounded-2xl text-xs sm:text-sm shadow-sm leading-relaxed ${
+                      className={`p-4 rounded-3xl text-xs sm:text-sm shadow-xs leading-relaxed transition-all ${
                         isUser
-                          ? "bg-blue-600 text-white rounded-br-xs"
-                          : "bg-white text-slate-800 border border-slate-200 rounded-bl-xs"
+                          ? "bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-br-xs font-medium"
+                          : "bg-white text-slate-800 border border-slate-200/80 rounded-bl-xs shadow-slate-100"
                       }`}
                     >
                       <p>{item.message}</p>
 
-                      {/* Attached Tool Call Badge if Present */}
+                      {/* Attached Tool Execution Inspector Card */}
                       {item.tool_call && (
-                        <div className="mt-2.5 pt-2 border-t border-slate-100 bg-slate-50 p-2.5 rounded-xl text-slate-700 text-[11px]">
-                          <div className="flex items-center gap-1.5 font-semibold text-blue-700 mb-1">
+                        <div className="mt-3 pt-2.5 border-t border-slate-100 bg-slate-50/90 p-3 rounded-2xl text-slate-700 text-[11px] space-y-1">
+                          <div className="flex items-center gap-1.5 font-bold text-indigo-700">
                             <Wrench className="w-3.5 h-3.5" />
-                            <span>Gemini Executed Tool: {item.tool_call.name}</span>
+                            <span>Executed Tool: {item.tool_call.name}</span>
                           </div>
-                          <div className="font-mono text-[10px] text-slate-600 overflow-x-auto bg-white p-1.5 rounded border border-slate-200">
+                          <div className="font-mono text-[10px] text-slate-600 bg-white p-2 rounded-xl border border-slate-200/80 overflow-x-auto">
                             {JSON.stringify(item.tool_call.args)}
                           </div>
                         </div>
                       )}
                     </div>
 
-                    <div className={`text-[10px] text-slate-400 px-1 ${isUser ? "text-right" : "text-left"}`}>
+                    <div className={`text-[10px] text-slate-400 px-1 font-medium ${isUser ? "text-right" : "text-left"}`}>
                       {isUser ? callerName : "Invyra Voice AI"} &bull; {item.timestamp}
                     </div>
                   </div>
 
                   {isUser && (
-                    <div className="w-8 h-8 rounded-xl bg-slate-800 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                    <div className="w-8 h-8 rounded-xl bg-slate-800 text-white flex items-center justify-center flex-shrink-0 shadow-sm mt-0.5">
                       <User className="w-4 h-4" />
                     </div>
                   )}
@@ -524,17 +554,16 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
             })
           )}
 
-          {/* Thinking indicator */}
           {isAgentThinking && (
-            <div className="flex gap-3 items-start">
+            <div className="flex gap-3 items-start animate-in fade-in duration-150">
               <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
                 <Bot className="w-4 h-4" />
               </div>
-              <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm flex items-center gap-2">
+              <div className="bg-white border border-slate-200/90 rounded-2xl px-4 py-3 shadow-sm flex items-center gap-2.5">
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "0ms" }}></span>
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "150ms" }}></span>
                 <span className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: "300ms" }}></span>
-                <span className="text-xs text-slate-500 font-medium ml-1">AI checking calendar & formulating reply...</span>
+                <span className="text-xs text-slate-600 font-semibold ml-1">Checking calendar & formulating response...</span>
               </div>
             </div>
           )}
@@ -542,33 +571,33 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Live Executed Tools Drawer */}
+        {/* Live Active Tool Executions Drawer */}
         {latestTools.length > 0 && (
-          <div className="bg-indigo-50/70 border-t border-indigo-100 p-3">
-            <div className="flex items-center justify-between mb-1.5">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">
+          <div className="bg-indigo-50/80 border-t border-indigo-100 p-3.5">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-[11px] font-extrabold uppercase tracking-wider text-indigo-900 flex items-center gap-1.5">
                 <Calendar className="w-3.5 h-3.5 text-indigo-600" />
-                Active Google Calendar & Agent Tool Executions ({latestTools.length})
+                Live Tool Executions ({latestTools.length})
               </span>
               <button
                 onClick={() => setLatestTools([])}
-                className="text-[10px] text-indigo-600 hover:text-indigo-800 font-medium"
+                className="text-[11px] text-indigo-600 hover:text-indigo-800 font-semibold"
               >
                 Clear
               </button>
             </div>
-            <div className="flex gap-2 overflow-x-auto pb-1">
+            <div className="flex gap-2.5 overflow-x-auto pb-1">
               {latestTools.slice(-3).map((tool, idx) => (
-                <div key={idx} className="bg-white border border-indigo-200 rounded-lg p-2 text-[11px] min-w-[220px] max-w-[280px] shadow-xs flex-shrink-0">
-                  <div className="font-semibold text-indigo-800 truncate flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                <div key={idx} className="bg-white border border-indigo-200/90 rounded-xl p-2.5 text-[11px] min-w-[240px] max-w-[300px] shadow-xs flex-shrink-0">
+                  <div className="font-bold text-indigo-800 truncate flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                     {tool.name}
                   </div>
-                  <div className="text-[10px] text-slate-500 truncate mt-0.5">
-                    Args: {JSON.stringify(tool.args)}
+                  <div className="text-[10px] text-slate-500 font-mono truncate mt-1">
+                    {JSON.stringify(tool.args)}
                   </div>
                   {tool.result && (
-                    <div className="text-[10px] text-emerald-700 font-medium truncate mt-0.5">
+                    <div className="text-[10px] text-emerald-700 font-semibold truncate mt-1">
                       Result: {tool.result.reason || tool.result.confirmedTime || tool.result.status || "Success"}
                     </div>
                   )}
@@ -578,16 +607,16 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
           </div>
         )}
 
-        {/* Quick Suggestion Pills */}
+        {/* Quick Suggestion Chips Styled Like Modern Mobile OS */}
         {callState === "connected" && (
-          <div className="px-5 pt-3 pb-1 bg-white border-t border-slate-100 flex items-center gap-2 overflow-x-auto">
-            <span className="text-[10px] uppercase font-bold text-slate-400 flex-shrink-0">Try Asking:</span>
+          <div className="px-5 pt-3 pb-1 bg-white border-t border-slate-100 flex items-center gap-2 overflow-x-auto select-none">
+            <span className="text-[10px] uppercase font-bold text-slate-400 flex-shrink-0">Quick Reply:</span>
             {promptSuggestions.map((sug, i) => (
               <button
                 key={i}
                 onClick={() => sendMessageToAI(sug.text)}
                 disabled={isAgentThinking || isRecording}
-                className="text-[11px] font-medium px-2.5 py-1 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-lg whitespace-nowrap transition border border-slate-200 active:scale-95 disabled:opacity-50"
+                className="text-[11px] font-semibold px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-xl whitespace-nowrap transition border border-slate-200/80 active:scale-95 disabled:opacity-50"
               >
                 {sug.label}
               </button>
@@ -602,7 +631,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
           <button
             onClick={isRecording ? stopMicrophoneRecording : startMicrophoneRecording}
             disabled={callState !== "connected" || isAgentThinking || isProcessingSTT}
-            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition shadow-md active:scale-95 ${
+            className={`w-12 h-12 rounded-2xl flex items-center justify-center transition shadow-md active:scale-95 flex-shrink-0 ${
               isRecording
                 ? "bg-rose-600 text-white animate-pulse shadow-rose-500/30"
                 : callState === "connected"
@@ -614,7 +643,7 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
             {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
           </button>
 
-          {/* Text Input Fallback / Direct Message */}
+          {/* Text Input Fallback */}
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -631,10 +660,10 @@ export function Simulator({ business, workflows, onConversationFinished }: Simul
                 callState === "connected"
                   ? isRecording
                     ? "Recording audio... click microphone to send"
-                    : "Type a response or use the microphone..."
+                    : "Speak or type your message..."
                   : "Click 'Simulate Missed Call Callback' to start"
               }
-              className="flex-1 px-4 py-3 bg-slate-100 border border-slate-200 rounded-2xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition disabled:opacity-60"
+              className="flex-1 px-4 py-3 bg-slate-100/90 border border-slate-200 rounded-2xl text-xs sm:text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition disabled:opacity-60"
             />
 
             <button

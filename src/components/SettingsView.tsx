@@ -13,7 +13,8 @@ import {
   PlusCircle,
   Trash2,
   ShieldCheck,
-  Server
+  Server,
+  Sparkles
 } from "lucide-react";
 import { Business } from "@/lib/types";
 
@@ -52,153 +53,160 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="space-y-6">
       
-      {/* Header */}
-      <div className="glass-card rounded-3xl p-6 border border-slate-800/80 bg-slate-900/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
+      {/* VIBRANT BLUE GRADIENT HERO BANNER (MATCHING TEMPLATE) */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-3xl p-6 sm:p-7 shadow-lg shadow-blue-500/20 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        
+        {/* Decorative background glow rings */}
+        <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute left-1/3 -top-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-xl pointer-events-none" />
+
+        <div className="relative z-10">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30 flex items-center gap-1.5">
-              <Server className="w-3 h-3 text-indigo-400" />
-              System Architecture & Telemetry
+            <span className="text-[11px] font-bold px-3 py-1 bg-white/15 backdrop-blur-md text-white rounded-full border border-white/20 flex items-center gap-1.5 shadow-xs">
+              <Server className="w-3.5 h-3.5 text-blue-200" />
+              System Architecture & Configuration
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 tracking-tight">
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2.5 tracking-tight">
             Integrations & Service Settings
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-blue-100 mt-1 max-w-2xl leading-relaxed">
             Status of autonomous LLM reasoning, serverless voice models, multi-tenant database, and Google Calendar tool calling.
           </p>
         </div>
+
+        {onOpenNewBusinessModal && (
+          <button
+            onClick={onOpenNewBusinessModal}
+            className="relative z-10 flex items-center gap-2 px-5 py-2.5 bg-white text-blue-700 hover:bg-blue-50 rounded-2xl text-xs font-bold transition active:scale-95 shadow-md shadow-blue-900/10 flex-shrink-0"
+          >
+            <PlusCircle className="w-4 h-4 text-blue-600" />
+            Add Business Profile
+          </button>
+        )}
+
       </div>
 
-      {/* Integration Cards Grid */}
+      {/* 4 INTEGRATION CARDS (CRISP WHITE CARDS) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         
         {/* Gemini AI Card */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3 backdrop-blur-md">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
                 <Cpu className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm text-white">Google Gemini AI</h4>
+                <h4 className="font-bold text-sm text-slate-900">Google Gemini AI</h4>
                 <p className="text-[11px] text-slate-400">LLM Reasoning & Function Calling</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full border border-emerald-500/30">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 bg-emerald-50 text-emerald-700 rounded-full border border-emerald-200">
               Active
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Powers the conversational assistant, multilingual Hindi/English translation, conditional urgency logic, and autonomous tool calling decisions.
           </p>
-          <div className="text-[11px] text-slate-500 font-mono">
-            Env: <code className="text-cyan-300">GEMINI_API_KEY</code>
+          <div className="text-[11px] text-slate-400 font-mono">
+            Env: <code className="text-blue-600 font-bold">GEMINI_API_KEY</code>
           </div>
         </div>
 
         {/* Deepgram Voice Card */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3 backdrop-blur-md">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-teal-500/10 border border-teal-500/20 text-teal-400 flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center border border-teal-100">
                 <Mic className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm text-white">Deepgram Voice AI</h4>
+                <h4 className="font-bold text-sm text-slate-900">Deepgram Voice AI</h4>
                 <p className="text-[11px] text-slate-400">Nova-2 STT & Aura TTS</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 bg-teal-500/20 text-teal-300 rounded-full border border-teal-500/30">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 bg-teal-50 text-teal-700 rounded-full border border-teal-200">
               No Browser APIs
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Strictly uses serverless Deepgram Nova-2 for real-time speech-to-text and Deepgram Aura for natural neural text-to-speech audio streaming.
           </p>
-          <div className="text-[11px] text-slate-500 font-mono">
-            Env: <code className="text-teal-300">DEEPGRAM_API_KEY</code>
+          <div className="text-[11px] text-slate-400 font-mono">
+            Env: <code className="text-teal-600 font-bold">DEEPGRAM_API_KEY</code>
           </div>
         </div>
 
         {/* Supabase PostgreSQL Card */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3 backdrop-blur-md">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center border border-indigo-100">
                 <Database className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm text-white">Supabase Database</h4>
+                <h4 className="font-bold text-sm text-slate-900">Supabase Database</h4>
                 <p className="text-[11px] text-slate-400">PostgreSQL Cloud Persistence</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 bg-blue-500/20 text-blue-300 rounded-full border border-blue-500/30">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 bg-blue-50 text-blue-700 rounded-full border border-blue-200">
               Multi-Tenant RLS
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Stores businesses, workflows, transcripts, and records. Automatically falls back to persistent local storage when credentials are not yet supplied.
           </p>
-          <div className="text-[11px] text-slate-500 font-mono">
-            Env: <code className="text-blue-300">NEXT_PUBLIC_SUPABASE_URL</code>
+          <div className="text-[11px] text-slate-400 font-mono">
+            Env: <code className="text-indigo-600 font-bold">NEXT_PUBLIC_SUPABASE_URL</code>
           </div>
         </div>
 
         {/* Google Calendar Card */}
-        <div className="bg-slate-900/70 border border-slate-800 rounded-2xl p-5 shadow-lg space-y-3 backdrop-blur-md">
+        <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-sm space-y-3">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center border border-blue-100">
                 <Calendar className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm text-white">Google Calendar API</h4>
+                <h4 className="font-bold text-sm text-slate-900">Google Calendar API</h4>
                 <p className="text-[11px] text-slate-400">Autonomous Agent Tool</p>
               </div>
             </div>
-            <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30">
+            <span className="text-[10px] font-bold px-2.5 py-0.5 bg-blue-50 text-blue-700 rounded-full border border-blue-200">
               Tool Calling
             </span>
           </div>
-          <p className="text-xs text-slate-400 leading-relaxed">
+          <p className="text-xs text-slate-600 leading-relaxed">
             Enables the AI to check calendar slot availability, book events, reschedule appointments, and handle cancellations autonomously.
           </p>
-          <div className="text-[11px] text-slate-500 font-mono">
-            Env: <code className="text-indigo-300">GOOGLE_CALENDAR_ID</code>
+          <div className="text-[11px] text-slate-400 font-mono">
+            Env: <code className="text-blue-600 font-bold">GOOGLE_CALENDAR_ID</code>
           </div>
         </div>
 
       </div>
 
-      {/* Configured Business Profiles Directory */}
-      <div className="bg-slate-900/70 rounded-3xl p-6 border border-slate-800 shadow-xl space-y-4 backdrop-blur-md">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      {/* CONFIGURED BUSINESS PROFILES DIRECTORY (CRISP WHITE CARD) */}
+      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
           <div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-blue-500/20 text-cyan-400 flex items-center justify-center border border-blue-500/30">
+              <div className="w-7 h-7 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
                 <Building2 className="w-4 h-4" />
               </div>
-              <h3 className="font-extrabold text-base text-white">
+              <h3 className="font-extrabold text-base text-slate-900">
                 Configured Business Profiles ({businesses?.length || 0})
               </h3>
             </div>
-            <p className="text-xs text-slate-400 mt-1">
+            <p className="text-xs text-slate-500 mt-1">
               Active businesses receiving automated missed-call callbacks. You can add new profiles or remove existing ones.
             </p>
           </div>
-
-          {onOpenNewBusinessModal && (
-            <button
-              onClick={onOpenNewBusinessModal}
-              className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold transition shadow-md shadow-blue-500/20 active:scale-95 self-start sm:self-center border border-indigo-400/30"
-            >
-              <PlusCircle className="w-4 h-4" />
-              Add Business Profile
-            </button>
-          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 pt-1">
@@ -207,15 +215,15 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
             return (
               <div
                 key={biz.id}
-                className="bg-slate-950/80 border border-slate-800/90 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-slate-700 transition"
+                className="bg-slate-50/80 border border-slate-200/90 rounded-2xl p-4 flex flex-col justify-between gap-3 hover:border-slate-300 transition"
               >
                 <div>
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-blue-100/70 text-blue-800">
                         {biz.industry}
                       </span>
-                      <h4 className="font-bold text-sm text-white mt-1.5">{biz.name}</h4>
+                      <h4 className="font-bold text-sm text-slate-900 mt-1.5">{biz.name}</h4>
                     </div>
                     {onDeleteBusiness && (
                       <button
@@ -230,8 +238,8 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
                         }}
                         className={`p-2 rounded-xl border transition ${
                           canDelete
-                            ? "bg-slate-900 hover:bg-rose-950/60 text-slate-400 hover:text-rose-400 border-slate-800 hover:border-rose-500/40"
-                            : "bg-slate-900 text-slate-600 border-slate-800 cursor-not-allowed"
+                            ? "bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border-slate-200 hover:border-rose-200"
+                            : "bg-slate-100 text-slate-300 border-slate-200 cursor-not-allowed"
                         }`}
                         title={canDelete ? `Remove ${biz.name}` : "At least one business profile is required"}
                       >
@@ -240,21 +248,21 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
                     )}
                   </div>
 
-                  <div className="text-xs text-slate-400 mt-2 space-y-1 font-medium">
+                  <div className="text-xs text-slate-500 mt-2 space-y-1 font-medium">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-slate-500">Phone:</span>
-                      <span className="font-mono text-cyan-300">{biz.phone}</span>
+                      <span className="text-slate-400">Phone:</span>
+                      <span className="font-mono text-slate-700">{biz.phone}</span>
                     </div>
                     {biz.operating_hours && (
                       <div className="flex items-center gap-1.5">
-                        <span className="text-slate-500">Hours:</span>
-                        <span className="text-slate-300 truncate">{biz.operating_hours}</span>
+                        <span className="text-slate-400">Hours:</span>
+                        <span className="text-slate-700 truncate">{biz.operating_hours}</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <div className="pt-2.5 border-t border-slate-900 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                <div className="pt-2.5 border-t border-slate-200/80 flex items-center justify-between text-[11px] text-slate-400 font-mono">
                   <span>TZ: {biz.timezone || "America/New_York"}</span>
                   <span>ID: {biz.id.slice(0, 8)}...</span>
                 </div>
@@ -264,22 +272,22 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\\nMIIEvg...\\n-----END PRIVATE K
         </div>
       </div>
 
-      {/* Environment Config Code Block */}
-      <div className="bg-slate-900/70 rounded-3xl p-6 border border-slate-800 shadow-xl space-y-3 backdrop-blur-md">
+      {/* ENVIRONMENT CONFIG CODE BLOCK (CRISP WHITE CARD) */}
+      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-sm space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Key className="w-4 h-4 text-cyan-400" />
-            <h3 className="font-bold text-sm text-white">Environment Configuration (.env.local)</h3>
+            <Key className="w-4 h-4 text-blue-600" />
+            <h3 className="font-bold text-sm text-slate-900">Environment Configuration (.env.local)</h3>
           </div>
           <button
             onClick={copyEnv}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 rounded-xl text-xs font-semibold transition border border-slate-700"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-blue-50 hover:text-blue-700 text-slate-700 rounded-xl text-xs font-semibold transition border border-slate-200"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? "Copied!" : "Copy Template"}
           </button>
         </div>
-        <pre className="p-4 bg-slate-950 rounded-2xl border border-slate-800 text-[11px] font-mono text-slate-300 overflow-x-auto leading-relaxed">
+        <pre className="p-4 bg-slate-900 rounded-2xl border border-slate-800 text-[11px] font-mono text-slate-200 overflow-x-auto leading-relaxed">
           {envTemplate}
         </pre>
       </div>

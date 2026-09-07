@@ -10,7 +10,9 @@ import {
   RefreshCw, 
   Sparkles,
   CheckCircle2,
-  CalendarCheck
+  CalendarCheck,
+  CalendarPlus,
+  ArrowRight
 } from "lucide-react";
 
 export function CalendarView() {
@@ -59,74 +61,93 @@ export function CalendarView() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="space-y-6">
       
-      {/* Top Banner */}
-      <div className="glass-card rounded-3xl p-6 border border-slate-800/80 bg-slate-900/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
+      {/* VIBRANT BLUE GRADIENT HERO BANNER (MATCHING TEMPLATE) */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-3xl p-6 sm:p-7 shadow-lg shadow-blue-500/20 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        
+        {/* Decorative background glow rings */}
+        <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute left-1/3 -top-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-xl pointer-events-none" />
+
+        <div className="relative z-10">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold px-3 py-1 bg-cyan-500/20 text-cyan-300 rounded-full border border-cyan-500/30 flex items-center gap-1.5">
-              <CalendarCheck className="w-3 h-3 text-cyan-400" />
+            <span className="text-[11px] font-bold px-3 py-1 bg-white/15 backdrop-blur-md text-white rounded-full border border-white/20 flex items-center gap-1.5 shadow-xs">
+              <CalendarCheck className="w-3.5 h-3.5 text-blue-200" />
               Google Calendar Synchronization
             </span>
-            <span className="text-xs text-slate-400 font-medium">
-              Mode: <strong className={isGoogleConfigured ? "text-emerald-400 font-bold" : "text-cyan-300 font-bold"}>
-                {isGoogleConfigured ? "Live Google Calendar API Connected" : "Local / Supabase Synchronized"}
-              </strong>
+            <span className="text-xs text-blue-100 font-medium hidden md:inline">
+              Mode: <strong className="text-white font-bold">{isGoogleConfigured ? "Live Google Calendar API Connected" : "Local / Supabase Synchronized"}</strong>
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 tracking-tight">
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2.5 tracking-tight">
             Appointment Agenda & Calendar Events
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            Appointments created, checked, or rescheduled autonomously by Gemini AI during missed-call callbacks.
+          <p className="text-xs text-blue-100 mt-1 max-w-2xl leading-relaxed">
+            Real-time synchronization between Gemini AI autonomous tool calls and Google Calendar. Appointments booked, rescheduled, or checked during missed-call callbacks appear here immediately.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* Action Buttons in Hero */}
+        <div className="relative z-10 flex items-center gap-2 w-full sm:w-auto">
           <button
             onClick={handleQuickAvailabilityCheck}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-300 rounded-xl text-xs font-bold transition active:scale-95 border border-indigo-500/30 shadow-xs"
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-white/15 hover:bg-white/25 text-white rounded-2xl text-xs font-bold transition active:scale-95 border border-white/20 shadow-xs backdrop-blur-md"
           >
-            <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+            <Sparkles className="w-3.5 h-3.5 text-yellow-300" />
             Test Availability Tool
           </button>
           <button
             onClick={fetchEvents}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-800/80 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold transition active:scale-95 border border-slate-700"
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-white text-blue-700 hover:bg-blue-50 rounded-2xl text-xs font-bold transition active:scale-95 shadow-md shadow-blue-900/10"
           >
-            <RefreshCw className={`w-3.5 h-3.5 text-cyan-400 ${loading ? "animate-spin" : ""}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </button>
         </div>
+
       </div>
 
+      {/* Tool Test Notification Pill */}
       {testStatus && (
-        <div className="bg-indigo-950/60 border border-indigo-500/40 rounded-2xl p-4 flex items-center justify-between text-xs text-indigo-200 shadow-md">
-          <div className="flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-            <span>{testStatus}</span>
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex items-center justify-between text-xs text-blue-900 shadow-xs animate-in fade-in duration-150">
+          <div className="flex items-center gap-2.5">
+            <Sparkles className="w-4 h-4 text-blue-600 flex-shrink-0" />
+            <span className="font-semibold">{testStatus}</span>
           </div>
-          <button onClick={() => setTestStatus(null)} className="text-indigo-400 hover:text-white font-bold">✕</button>
+          <button onClick={() => setTestStatus(null)} className="text-blue-700 font-bold px-1 hover:text-blue-900">✕</button>
         </div>
       )}
 
-      {/* Events List */}
-      <div className="bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-slate-800 shadow-2xl overflow-hidden">
-        <div className="px-6 py-4 bg-slate-950 text-white flex items-center justify-between border-b border-slate-800">
-          <div className="font-semibold text-sm flex items-center gap-2">
-            <CalendarIcon className="w-4 h-4 text-cyan-400" />
-            Scheduled Appointments ({events.length})
+      {/* CRISP WHITE MAIN CONTAINER (MATCHING TEMPLATE) */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-7 space-y-5">
+        
+        {/* Subheader */}
+        <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+          <div>
+            <h3 className="font-extrabold text-base text-slate-900 flex items-center gap-2">
+              <CalendarIcon className="w-4 h-4 text-blue-600" />
+              Scheduled Appointments ({events.length})
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Live events synchronized with business operating hours and availability rules.
+            </p>
           </div>
-          <div className="text-xs text-slate-400 font-mono">
-            Autonomous Calendar Tool Sync
+
+          <div className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Tool Calling Active
           </div>
         </div>
 
-        <div className="p-6 space-y-4">
+        {/* Events Feed */}
+        <div className="space-y-3.5">
           {events.length === 0 ? (
-            <div className="text-center py-12 text-slate-500 text-xs">
-              No calendar events found. Try booking an appointment through the Voice Simulator!
+            <div className="text-center py-14 text-slate-400">
+              <CalendarPlus className="w-12 h-12 mx-auto text-slate-300 mb-2" />
+              <div className="font-bold text-slate-700 text-sm">No scheduled events found</div>
+              <p className="text-xs text-slate-400 mt-1">Try simulating an appointment booking callback in the Voice Simulator tab!</p>
             </div>
           ) : (
             events.map((event) => {
@@ -136,65 +157,67 @@ export function CalendarView() {
               return (
                 <div
                   key={event.id}
-                  className="bg-slate-950/70 hover:bg-slate-950 border border-slate-800/80 rounded-2xl p-4 transition flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm"
+                  className="bg-slate-50/70 hover:bg-slate-50 border border-slate-200/90 hover:border-blue-300 rounded-2xl p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xs group"
                 >
-                  <div className="flex items-start gap-3.5">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-950/80 border border-indigo-500/30 text-indigo-300 flex flex-col items-center justify-center font-bold flex-shrink-0 shadow-sm">
-                      <span className="text-[10px] uppercase font-semibold text-cyan-400">
+                  <div className="flex items-start gap-4">
+                    {/* Date Block */}
+                    <div className="w-14 h-14 rounded-2xl bg-blue-100/70 text-blue-800 flex flex-col items-center justify-center font-bold flex-shrink-0 border border-blue-200 shadow-2xs group-hover:scale-105 transition-transform">
+                      <span className="text-[10px] uppercase font-bold text-blue-600">
                         {startDate.toLocaleString([], { month: "short" })}
                       </span>
-                      <span className="text-base leading-none text-white">
+                      <span className="text-lg leading-none text-blue-950 font-extrabold mt-0.5">
                         {startDate.getDate()}
                       </span>
                     </div>
 
                     <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-white">{event.title}</span>
-                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full border ${
+                      <div className="flex items-center gap-2.5 flex-wrap">
+                        <span className="font-bold text-sm text-slate-900">{event.title}</span>
+                        <span className={`text-[10px] font-bold uppercase px-2.5 py-0.5 rounded-full border ${
                           event.status === "confirmed"
-                            ? "bg-emerald-950/60 text-emerald-300 border-emerald-500/40"
+                            ? "bg-emerald-50 text-emerald-700 border-emerald-200"
                             : event.status === "rescheduled"
-                            ? "bg-amber-950/60 text-amber-300 border-amber-500/40"
-                            : "bg-rose-950/60 text-rose-300 border-rose-500/40"
+                            ? "bg-amber-50 text-amber-700 border-amber-200"
+                            : "bg-rose-50 text-rose-700 border-rose-200"
                         }`}>
                           {event.status}
                         </span>
                       </div>
 
-                      <div className="text-xs text-slate-400 flex flex-wrap items-center gap-3">
-                        <span className="flex items-center gap-1 font-medium text-slate-300">
-                          <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                      <div className="text-xs text-slate-500 flex flex-wrap items-center gap-3 font-medium">
+                        <span className="flex items-center gap-1.5 text-slate-700 font-semibold">
+                          <Clock className="w-3.5 h-3.5 text-blue-600" />
                           {startDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} - {endDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                         </span>
                         <span>&bull;</span>
-                        <span className="flex items-center gap-1 text-slate-300">
-                          <User className="w-3.5 h-3.5 text-slate-500" />
+                        <span className="flex items-center gap-1 text-slate-600">
+                          <User className="w-3.5 h-3.5 text-slate-400" />
                           {event.attendee_name}
                         </span>
                         <span>&bull;</span>
-                        <span className="flex items-center gap-1 font-mono text-cyan-400">
-                          <Phone className="w-3.5 h-3.5 text-slate-500" />
+                        <span className="flex items-center gap-1 font-mono text-slate-600">
+                          <Phone className="w-3.5 h-3.5 text-slate-400" />
                           {event.attendee_phone}
                         </span>
                       </div>
 
                       {event.notes && (
-                        <div className="text-xs text-slate-400 italic">
+                        <div className="text-xs text-slate-500 italic mt-0.5">
                           Notes: {event.notes}
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <div className="text-right text-[11px] text-slate-500 self-start sm:self-center font-mono">
-                    ID: {event.google_event_id || event.id}
+                  <div className="text-right text-[11px] text-slate-400 self-start sm:self-center font-mono bg-white px-3 py-1.5 rounded-xl border border-slate-200 shadow-2xs">
+                    ID: {event.google_event_id || event.id.slice(0, 14)}
                   </div>
                 </div>
               );
             })
           )}
         </div>
+
       </div>
 
     </div>

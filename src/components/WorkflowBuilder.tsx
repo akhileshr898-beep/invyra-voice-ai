@@ -214,55 +214,60 @@ export function WorkflowBuilder({
   ];
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6">
+    <div className="space-y-6">
       
-      {/* Header & Workflow Switcher */}
-      <div className="glass-card rounded-3xl p-6 border border-slate-800/80 bg-slate-900/60 shadow-[0_20px_50px_rgba(0,0,0,0.5)] backdrop-blur-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
+      {/* VIBRANT BLUE GRADIENT HERO BANNER (EXACT MATCH TO REFERENCE SCREENSHOT) */}
+      <div className="bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 text-white rounded-3xl p-6 sm:p-7 shadow-lg shadow-blue-500/20 relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        
+        {/* Decorative background glow rings */}
+        <div className="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute left-1/3 -top-10 w-40 h-40 bg-indigo-400/20 rounded-full blur-xl pointer-events-none" />
+
+        <div className="relative z-10">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-mono font-bold px-3 py-1 bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30 flex items-center gap-1.5">
-              <Sliders className="w-3 h-3 text-indigo-400" />
+            <span className="text-[11px] font-bold px-3 py-1 bg-white/15 backdrop-blur-md text-white rounded-full border border-white/20 flex items-center gap-1.5 shadow-xs">
+              <Sliders className="w-3.5 h-3.5 text-blue-200" />
               Visual Workflow Studio
             </span>
-            <span className="text-xs text-slate-400 font-medium">
-              Profile: <strong className="text-slate-200">{business.name}</strong>
+            <span className="text-xs text-blue-100 font-medium hidden md:inline">
+              Profile: <strong className="text-white font-bold">{business.name}</strong>
             </span>
           </div>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2 tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-2.5 tracking-tight">
             Configure Voice Assistant Workflow
           </h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-blue-100 mt-1 max-w-2xl leading-relaxed">
             Design your automated telephone conversation flow, schema collection, conditional urgency rules, and calendar integrations.
           </p>
         </div>
 
-        {/* Action Buttons & Selectors */}
-        <div className="flex items-center gap-2 w-full sm:w-auto">
+        {/* Action Buttons & Selectors in Hero */}
+        <div className="relative z-10 flex items-center gap-2 w-full sm:w-auto">
           <select
             value={selectedWorkflowId}
             onChange={(e) => setSelectedWorkflowId(e.target.value)}
-            className="px-3.5 py-2.5 bg-slate-950/90 border border-slate-800 rounded-2xl text-xs sm:text-sm font-semibold text-slate-200 focus:outline-none focus:border-indigo-500 shadow-inner"
+            className="px-4 py-2.5 bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl text-xs sm:text-sm font-bold text-white focus:outline-none focus:ring-2 focus:ring-white/40 shadow-xs cursor-pointer"
           >
             {businessWorkflows.map((wf) => (
-              <option key={wf.id} value={wf.id} className="bg-slate-900 text-white">
+              <option key={wf.id} value={wf.id} className="bg-slate-900 text-white font-medium">
                 {wf.name}
               </option>
             ))}
-            <option value="new" className="bg-slate-900 text-cyan-300">+ Create New Workflow</option>
+            <option value="new" className="bg-slate-900 text-cyan-300 font-bold">+ Create New Workflow</option>
           </select>
 
           <button
             onClick={resetBlankWorkflow}
-            className="p-2.5 bg-slate-800/80 hover:bg-slate-700 rounded-2xl border border-slate-700 text-xs font-bold text-slate-200 flex items-center gap-1 transition active:scale-95 shadow-md"
+            className="p-2.5 bg-white/15 hover:bg-white/25 backdrop-blur-md rounded-2xl border border-white/25 text-white font-bold transition active:scale-95 shadow-xs"
             title="Start New Workflow"
           >
-            <Plus className="w-4 h-4 text-cyan-400" />
+            <Plus className="w-4 h-4 text-white" />
           </button>
         </div>
       </div>
 
-      {/* Modern Visual Stepper */}
-      <div className="bg-slate-950/80 rounded-2xl p-2.5 border border-slate-800/80 shadow-md flex items-center justify-between gap-2 overflow-x-auto">
+      {/* CRISP WHITE STEPPER BAR */}
+      <div className="bg-white rounded-2xl p-2.5 border border-slate-200/90 shadow-xs flex items-center justify-between gap-2 overflow-x-auto">
         {steps.map((s) => {
           const isCurrent = activeStep === s.num;
           const isCompleted = activeStep > s.num;
@@ -272,23 +277,23 @@ export function WorkflowBuilder({
               onClick={() => setActiveStep(s.num as any)}
               className={`flex-1 min-w-[150px] py-3 px-3.5 rounded-2xl text-left transition-all relative ${
                 isCurrent
-                  ? "bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-[0_0_20px_rgba(79,70,229,0.35)] border border-indigo-400/30"
+                  ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
                   : isCompleted
-                  ? "bg-slate-900/60 hover:bg-slate-900 text-slate-300 border border-slate-800"
-                  : "bg-transparent text-slate-500 hover:bg-slate-900/40"
+                  ? "bg-slate-50 hover:bg-slate-100 text-slate-800"
+                  : "bg-transparent text-slate-500 hover:bg-slate-50"
               }`}
             >
               <div className="flex items-center gap-2 mb-1">
                 <span className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${
-                  isCurrent ? "bg-white text-blue-600" : isCompleted ? "bg-emerald-500 text-white" : "bg-slate-800 text-slate-400"
+                  isCurrent ? "bg-white text-blue-600" : isCompleted ? "bg-emerald-500 text-white" : "bg-slate-200 text-slate-600"
                 }`}>
                   {isCompleted ? <Check className="w-3 h-3" /> : s.num}
                 </span>
-                <span className={`text-xs font-bold ${isCurrent ? "text-white" : "text-slate-300"}`}>
+                <span className={`text-xs font-bold ${isCurrent ? "text-white" : "text-slate-800"}`}>
                   {s.label}
                 </span>
               </div>
-              <div className={`text-[10px] ml-7 truncate ${isCurrent ? "text-blue-100" : "text-slate-500"}`}>
+              <div className={`text-[10px] ml-7 truncate ${isCurrent ? "text-blue-100" : "text-slate-400"}`}>
                 {s.desc}
               </div>
             </button>
@@ -296,56 +301,56 @@ export function WorkflowBuilder({
         })}
       </div>
 
-      {/* Main Step Content Container */}
-      <div className="bg-slate-900/70 backdrop-blur-xl rounded-[2rem] border border-slate-800 shadow-[0_20px_60px_rgba(0,0,0,0.6)] p-6 sm:p-8 space-y-6">
+      {/* CRISP WHITE STEP CONTENT CONTAINER (EXACT MATCH TO REFERENCE SCREENSHOT) */}
+      <div className="bg-white rounded-3xl border border-slate-200/90 shadow-sm p-6 sm:p-8 space-y-6 text-slate-900">
         
         {/* STEP 1: IDENTITY & TRIGGER */}
         {activeStep === 1 && (
           <div className="space-y-6 animate-in fade-in duration-200">
             <div>
-              <h3 className="text-xl font-extrabold text-white tracking-tight">Step 1: Workflow Identity & Trigger</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Step 1: Workflow Identity & Trigger</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 Name your workflow and verify the automated missed-call event trigger.
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                   Workflow Name
                 </label>
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. Clinic Appointment Booking & Follow-up"
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-950/80 border border-slate-800 focus:outline-none focus:border-indigo-500 text-sm font-semibold text-white placeholder-slate-600"
+                  placeholder="e.g. Clinic Missed Call - Appointment Booking & Rescheduling"
+                  className="w-full px-4 py-3 rounded-2xl bg-blue-50/40 border border-blue-200/80 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm font-semibold text-slate-900 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                   Trigger Event
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="border border-cyan-500/40 bg-slate-950/90 rounded-2xl p-5 flex items-start gap-3.5 shadow-[0_0_20px_rgba(6,182,212,0.15)]">
-                    <div className="w-10 h-10 rounded-2xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 border border-cyan-500/30">
+                  <div className="border-2 border-blue-600 bg-blue-50/60 rounded-2xl p-5 flex items-start gap-3.5 shadow-2xs">
+                    <div className="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-sm">
                       <WorkflowIcon className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="font-bold text-sm text-white">Missed Call (Automated Outbound Callback)</div>
-                      <div className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      <div className="font-bold text-sm text-slate-900">Missed Call (Automated Outbound Callback)</div>
+                      <div className="text-xs text-slate-500 mt-1 leading-relaxed">
                         Triggered automatically when a customer call is missed. Voice AI initiates call within 15 seconds.
                       </div>
                     </div>
                   </div>
 
-                  <div className="border border-slate-800 bg-slate-950/40 rounded-2xl p-5 flex items-start gap-3.5 opacity-60">
-                    <div className="w-10 h-10 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center flex-shrink-0">
+                  <div className="border border-slate-200 bg-slate-50 rounded-2xl p-5 flex items-start gap-3.5 opacity-70">
+                    <div className="w-10 h-10 rounded-2xl bg-slate-200 text-slate-700 flex items-center justify-center flex-shrink-0">
                       <Settings2 className="w-5 h-5" />
                     </div>
                     <div>
-                      <div className="font-bold text-sm text-slate-300">Manual / Web Simulator Trigger</div>
+                      <div className="font-bold text-sm text-slate-900">Manual / Web Simulator Trigger</div>
                       <div className="text-xs text-slate-500 mt-1 leading-relaxed">
                         Testable anytime by clicking "Simulate Missed Call Callback" in the Voice Simulator tab.
                       </div>
@@ -360,9 +365,9 @@ export function WorkflowBuilder({
                   id="isActive"
                   checked={isActive}
                   onChange={(e) => setIsActive(e.target.checked)}
-                  className="w-4 h-4 text-indigo-600 rounded bg-slate-950 border-slate-700 focus:ring-indigo-500"
+                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
                 />
-                <label htmlFor="isActive" className="text-xs sm:text-sm font-bold text-slate-300 cursor-pointer">
+                <label htmlFor="isActive" className="text-xs sm:text-sm font-bold text-slate-800 cursor-pointer">
                   Activate this workflow for missed-call callbacks immediately
                 </label>
               </div>
@@ -374,17 +379,17 @@ export function WorkflowBuilder({
         {activeStep === 2 && (
           <div className="space-y-6 animate-in fade-in duration-200">
             <div>
-              <h3 className="text-xl font-extrabold text-white tracking-tight">Step 2: Opening Greeting & Spoken Persona</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Step 2: Opening Greeting & Spoken Persona</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 The opening sentence spoken by Deepgram Aura TTS as soon as the customer answers.
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center justify-between">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                   <span>Opening Greeting (Spoken by AI)</span>
-                  <span className="text-[11px] text-teal-400 font-semibold flex items-center gap-1">
+                  <span className="text-[11px] text-blue-600 font-bold flex items-center gap-1">
                     <Volume2 className="w-3.5 h-3.5" /> Deepgram Aura Voice
                   </span>
                 </label>
@@ -393,14 +398,14 @@ export function WorkflowBuilder({
                   value={greeting}
                   onChange={(e) => setGreeting(e.target.value)}
                   placeholder="Hello! This is Invyra Medical Care calling you back after missing your call..."
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-950/80 border border-slate-800 focus:outline-none focus:border-indigo-500 text-sm leading-relaxed font-medium text-white placeholder-slate-600"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm leading-relaxed font-medium text-slate-800"
                 />
               </div>
 
-              <div className="bg-gradient-to-r from-indigo-950/60 to-cyan-950/40 p-5 rounded-3xl border border-indigo-500/30 flex items-start gap-3">
-                <Sparkles className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-                <div className="text-xs text-slate-300 space-y-1 leading-relaxed">
-                  <strong className="font-bold text-white">Bilingual English & Hindi Adaptation</strong>
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50/50 p-5 rounded-3xl border border-blue-100 flex items-start gap-3">
+                <Sparkles className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                <div className="text-xs text-slate-700 space-y-1 leading-relaxed">
+                  <strong className="font-bold text-slate-900">Bilingual English & Hindi Adaptation</strong>
                   <p>
                     Gemini AI automatically detects the caller's spoken language. If they greet in Hindi (e.g., <em>"नमस्ते, डॉक्टर से मिलना है"</em>), the assistant adapts naturally into Hindi without losing any appointment booking context.
                   </p>
@@ -415,14 +420,14 @@ export function WorkflowBuilder({
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-tight">Step 3: Questions & Data Fields to Collect</h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Step 3: Questions & Data Fields to Collect</h3>
+                <p className="text-xs text-slate-500 mt-1">
                   Specify what parameters Gemini must gather and validate from the caller.
                 </p>
               </div>
               <button
                 onClick={addField}
-                className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-500/25 transition active:scale-95 border border-indigo-400/30"
+                className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-md shadow-blue-500/20 transition active:scale-95"
               >
                 <Plus className="w-4 h-4" />
                 Add Question Field
@@ -431,14 +436,14 @@ export function WorkflowBuilder({
 
             <div className="space-y-3">
               {fields.map((field, idx) => (
-                <div key={idx} className="bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 space-y-3 shadow-md">
+                <div key={idx} className="bg-slate-50/80 border border-slate-200/90 rounded-3xl p-5 space-y-3 shadow-2xs">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold px-2.5 py-0.5 bg-slate-900 text-cyan-300 rounded-lg border border-slate-800">
+                    <span className="text-xs font-bold px-2.5 py-0.5 bg-slate-200 text-slate-700 rounded-lg">
                       Question Field #{idx + 1}
                     </span>
                     <button
                       onClick={() => removeField(idx)}
-                      className="text-slate-500 hover:text-rose-400 transition p-1"
+                      className="text-slate-400 hover:text-rose-600 transition p-1"
                       title="Remove Field"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -447,37 +452,37 @@ export function WorkflowBuilder({
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         Field Label
                       </label>
                       <input
                         type="text"
                         value={field.label}
                         onChange={(e) => updateField(idx, { label: e.target.value })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         Internal Key
                       </label>
                       <input
                         type="text"
                         value={field.key}
                         onChange={(e) => updateField(idx, { key: e.target.value })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-mono text-cyan-300 focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-mono text-slate-800"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         Field Type
                       </label>
                       <select
                         value={field.type}
                         onChange={(e) => updateField(idx, { type: e.target.value as any })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-800"
                       >
                         <option value="text">Text (Name, Note)</option>
                         <option value="date">Date (Appointment / Delivery)</option>
@@ -489,7 +494,7 @@ export function WorkflowBuilder({
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                       AI Spoken Prompt Question
                     </label>
                     <input
@@ -497,7 +502,7 @@ export function WorkflowBuilder({
                       value={field.promptQuestion}
                       onChange={(e) => updateField(idx, { promptQuestion: e.target.value })}
                       placeholder="e.g. Which doctor or specialty are you looking for?"
-                      className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                      className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium text-slate-900"
                     />
                   </div>
 
@@ -507,10 +512,10 @@ export function WorkflowBuilder({
                       id={`req-${idx}`}
                       checked={field.required}
                       onChange={(e) => updateField(idx, { required: e.target.checked })}
-                      className="w-4 h-4 text-indigo-600 rounded bg-slate-900 border-slate-700"
+                      className="w-4 h-4 text-blue-600 rounded"
                     />
-                    <label htmlFor={`req-${idx}`} className="text-xs font-semibold text-slate-300 cursor-pointer">
-                      Required Field (Assistant will politely follow up until caller provides this)
+                    <label htmlFor={`req-${idx}`} className="text-xs font-semibold text-slate-700 cursor-pointer">
+                      Required Field (Assistant will follow up until caller provides this)
                     </label>
                   </div>
                 </div>
@@ -524,35 +529,35 @@ export function WorkflowBuilder({
           <div className="space-y-6 animate-in fade-in duration-200">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-extrabold text-white tracking-tight">Step 4: Conditional Urgency Logic</h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Step 4: Simple Conditional Logic & Urgency</h3>
+                <p className="text-xs text-slate-500 mt-1">
                   Define business rules that flag incoming calls as Urgent or High Priority.
                 </p>
               </div>
               <button
                 onClick={addCondition}
-                className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-500/25 transition active:scale-95 border border-purple-400/30"
+                className="flex items-center gap-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold shadow-md shadow-indigo-500/20 transition active:scale-95"
               >
                 <Plus className="w-4 h-4" />
                 Add Condition Rule
               </button>
             </div>
 
-            <div className="bg-indigo-950/40 border border-indigo-500/30 rounded-2xl p-4 text-xs text-indigo-200 leading-relaxed font-medium">
-              <strong className="text-white">Example Urgency Condition:</strong> If cake required date is within 24 hours &rarr; mark order as <strong className="text-rose-400">Urgent Priority</strong>. If patient mentions "acute chest pain" &rarr; mark as <strong className="text-rose-400">Urgent Triage</strong>.
+            <div className="bg-blue-50/70 border border-blue-200/90 rounded-2xl p-4 text-xs text-blue-900 leading-relaxed font-medium">
+              <strong>Example Condition:</strong> If cake required date is within 24 hours &rarr; mark order as <strong className="text-rose-600">Urgent</strong>. Otherwise &rarr; mark as Normal enquiry.
             </div>
 
             <div className="space-y-3">
               {conditions.map((cond, idx) => (
-                <div key={idx} className="bg-slate-950/80 border border-slate-800/80 rounded-3xl p-5 space-y-3 shadow-md">
+                <div key={idx} className="bg-slate-50 border border-slate-200/90 rounded-3xl p-5 space-y-3 shadow-2xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-bold text-indigo-300 flex items-center gap-1.5">
-                      <GitBranch className="w-4 h-4 text-indigo-400" />
+                    <span className="text-xs font-bold text-indigo-700 flex items-center gap-1.5">
+                      <GitBranch className="w-4 h-4" />
                       Condition Rule #{idx + 1}
                     </span>
                     <button
                       onClick={() => removeCondition(idx)}
-                      className="text-slate-500 hover:text-rose-400 transition p-1"
+                      className="text-slate-400 hover:text-rose-600 transition p-1"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
@@ -560,16 +565,16 @@ export function WorkflowBuilder({
 
                   <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         If Field
                       </label>
                       <select
                         value={cond.field}
                         onChange={(e) => updateCondition(idx, { field: e.target.value })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium"
                       >
                         {fields.map((f) => (
-                          <option key={f.key} value={f.key} className="bg-slate-900 text-white">
+                          <option key={f.key} value={f.key}>
                             {f.label} ({f.key})
                           </option>
                         ))}
@@ -577,13 +582,13 @@ export function WorkflowBuilder({
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         Operator
                       </label>
                       <select
                         value={cond.operator}
                         onChange={(e) => updateCondition(idx, { operator: e.target.value as any })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium"
                       >
                         <option value="less_than_or_equal_hours">&le; Hours (e.g. &le; 24h)</option>
                         <option value="contains">Contains Keyword</option>
@@ -593,7 +598,7 @@ export function WorkflowBuilder({
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                         Value
                       </label>
                       <input
@@ -601,18 +606,18 @@ export function WorkflowBuilder({
                         value={cond.value}
                         onChange={(e) => updateCondition(idx, { value: e.target.value })}
                         placeholder="24 or chest pain"
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-medium text-white focus:outline-none focus:border-indigo-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
-                        Priority Level
+                      <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
+                        Set Priority Urgency
                       </label>
                       <select
                         value={cond.resultUrgency}
                         onChange={(e) => updateCondition(idx, { resultUrgency: e.target.value as any })}
-                        className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs font-bold text-rose-400 focus:outline-none focus:border-rose-500"
+                        className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs font-bold text-rose-600"
                       >
                         <option value="urgent">Urgent</option>
                         <option value="high">High</option>
@@ -622,15 +627,15 @@ export function WorkflowBuilder({
                   </div>
 
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">
                       Action Note / Operational Prompt
                     </label>
                     <input
                       type="text"
                       value={cond.resultNote || ""}
                       onChange={(e) => updateCondition(idx, { resultNote: e.target.value })}
-                      placeholder="e.g. Rush kitchen notice required or emergency clinic triage alert"
-                      className="w-full px-3.5 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-200 font-medium placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+                      placeholder="e.g. Rush kitchen notice required or medical triage alert"
+                      className="w-full px-3.5 py-2 bg-white border border-slate-200 rounded-xl text-xs text-slate-700 font-medium"
                     />
                   </div>
                 </div>
@@ -643,23 +648,21 @@ export function WorkflowBuilder({
         {activeStep === 5 && (
           <div className="space-y-6 animate-in fade-in duration-200">
             <div>
-              <h3 className="text-xl font-extrabold text-white tracking-tight">Step 5: Post-Collection Action & Closing</h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <h3 className="text-xl font-extrabold text-slate-900 tracking-tight">Step 5: Post-Collection Action & Closing</h3>
+              <p className="text-xs text-slate-500 mt-1">
                 Select what happens once all fields are collected, and configure the goodbye message.
               </p>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                   Action After Collection
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   
-                  <label className={`border rounded-3xl p-5 flex items-start gap-3.5 cursor-pointer transition ${
-                    actionAfterCollection === "create_calendar_event" 
-                      ? "border-cyan-500/60 bg-cyan-950/20 shadow-[0_0_20px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30" 
-                      : "border-slate-800 bg-slate-950/40 hover:border-slate-700"
+                  <label className={`border-2 rounded-3xl p-5 flex items-start gap-3.5 cursor-pointer transition ${
+                    actionAfterCollection === "create_calendar_event" ? "border-blue-600 bg-blue-50/50 shadow-2xs" : "border-slate-200 hover:border-slate-300"
                   }`}>
                     <input
                       type="radio"
@@ -669,20 +672,18 @@ export function WorkflowBuilder({
                       className="mt-1"
                     />
                     <div>
-                      <div className="font-bold text-sm text-white flex items-center gap-1.5">
-                        <Calendar className="w-4 h-4 text-cyan-400" />
+                      <div className="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+                        <Calendar className="w-4 h-4 text-blue-600" />
                         Google Calendar Sync
                       </div>
-                      <div className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      <div className="text-xs text-slate-500 mt-1 leading-relaxed">
                         Check availability, book event, or reschedule appointment on Google Calendar via Gemini tool calling.
                       </div>
                     </div>
                   </label>
 
-                  <label className={`border rounded-3xl p-5 flex items-start gap-3.5 cursor-pointer transition ${
-                    actionAfterCollection === "create_order_enquiry" 
-                      ? "border-indigo-500/60 bg-indigo-950/20 shadow-[0_0_20px_rgba(99,102,241,0.15)] ring-1 ring-indigo-500/30" 
-                      : "border-slate-800 bg-slate-950/40 hover:border-slate-700"
+                  <label className={`border-2 rounded-3xl p-5 flex items-start gap-3.5 cursor-pointer transition ${
+                    actionAfterCollection === "create_order_enquiry" ? "border-blue-600 bg-blue-50/50 shadow-2xs" : "border-slate-200 hover:border-slate-300"
                   }`}>
                     <input
                       type="radio"
@@ -692,11 +693,11 @@ export function WorkflowBuilder({
                       className="mt-1"
                     />
                     <div>
-                      <div className="font-bold text-sm text-white flex items-center gap-1.5">
-                        <MessageSquare className="w-4 h-4 text-indigo-400" />
+                      <div className="font-bold text-sm text-slate-900 flex items-center gap-1.5">
+                        <MessageSquare className="w-4 h-4 text-indigo-600" />
                         Create Order / Service Enquiry
                       </div>
-                      <div className="text-xs text-slate-400 mt-1 leading-relaxed">
+                      <div className="text-xs text-slate-500 mt-1 leading-relaxed">
                         Generate structured order summary, apply conditional urgency rules, and log to dashboard.
                       </div>
                     </div>
@@ -706,7 +707,7 @@ export function WorkflowBuilder({
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
                   Spoken Closing Message
                 </label>
                 <textarea
@@ -714,7 +715,7 @@ export function WorkflowBuilder({
                   value={closingMessage}
                   onChange={(e) => setClosingMessage(e.target.value)}
                   placeholder="Thank you! Your appointment request has been scheduled on our calendar..."
-                  className="w-full px-4 py-3 rounded-2xl bg-slate-950/80 border border-slate-800 focus:outline-none focus:border-indigo-500 text-sm leading-relaxed font-medium text-white placeholder-slate-600"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white text-sm leading-relaxed font-medium text-slate-900"
                 />
               </div>
             </div>
@@ -722,12 +723,12 @@ export function WorkflowBuilder({
         )}
 
         {/* Footer Navigation & Save Button */}
-        <div className="pt-4 border-t border-slate-800/80 flex items-center justify-between">
+        <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
           <div className="flex gap-2">
             {activeStep > 1 && (
               <button
                 onClick={() => setActiveStep((activeStep - 1) as any)}
-                className="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold rounded-2xl text-xs sm:text-sm transition"
+                className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl text-xs sm:text-sm transition"
               >
                 Previous Step
               </button>
@@ -735,7 +736,7 @@ export function WorkflowBuilder({
             {activeStep < 5 && (
               <button
                 onClick={() => setActiveStep((activeStep + 1) as any)}
-                className="px-4 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl text-xs sm:text-sm transition flex items-center gap-1 shadow-md shadow-blue-500/20"
+                className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl text-xs sm:text-sm transition flex items-center gap-1 shadow-md shadow-blue-500/20"
               >
                 Next Step
                 <ChevronRight className="w-4 h-4" />
@@ -745,7 +746,7 @@ export function WorkflowBuilder({
 
           <div className="flex items-center gap-3">
             {savedSuccess && (
-              <span className="text-xs text-emerald-400 font-bold flex items-center gap-1">
+              <span className="text-xs text-emerald-600 font-bold flex items-center gap-1">
                 <Check className="w-4 h-4" />
                 Workflow Saved Successfully!
               </span>
@@ -753,7 +754,7 @@ export function WorkflowBuilder({
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-[0_0_25px_rgba(16,185,129,0.35)] transition active:scale-95 disabled:opacity-50 border border-emerald-400/30"
+              className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white text-xs sm:text-sm font-bold rounded-2xl shadow-lg shadow-blue-500/25 transition active:scale-95 disabled:opacity-50"
             >
               <Save className="w-4 h-4" />
               {isSaving ? "Saving..." : "Save Workflow Configuration"}

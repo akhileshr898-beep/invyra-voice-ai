@@ -24,8 +24,7 @@
 | 4 | **Architecture Diagram** | README + `docs/architecture-diagram.png` | ✅ Verified | [docs/architecture-diagram.png](./docs/architecture-diagram.png) *(See [Architecture Section](#️-system-architecture--data-flow))* |
 | 5 | **Database Schema / Data Model** | README + `docs/database-schema.md` | ✅ Verified | [docs/database-schema.md](./docs/database-schema.md) *(See [Database Schema Section](#-database-schema--multi-tenancy))* |
 | 6 | **Environment Template** | `.env.example` without real keys | ✅ Verified | [.env.example](./.env.example) *(Placeholders only, zero secrets)* |
-| 7 | **5–8 Minute Walkthrough** | Loom Share Link | ✅ Verified | [Loom Video Walkthrough](https://www.loom.com/share/invyra-voice-ai-demo) *(Script: [DEMO_GUIDE.md](./DEMO_GUIDE.md))* |
-| 8 | **Working / Simulated / Next Note** | README Sections | ✅ Verified | [Working vs. Simulated Features & Future Roadmap](#️-working-vs-simulated-features--future-roadmap) |
+| 7 | **Working / Simulated / Next Note** | README Sections | ✅ Verified | [Working vs. Simulated Features & Future Roadmap](#️-working-vs-simulated-features--future-roadmap) |
 
 ---
 

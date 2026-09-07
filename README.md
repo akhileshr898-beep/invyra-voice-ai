@@ -33,8 +33,6 @@
 | Resource | Description | Direct Link |
 |:---|:---|:---|
 | **Source Repository** | GitHub Version Control | [github.com/akhileshr898-beep/invyra-voice-ai](https://github.com/akhileshr898-beep/invyra-voice-ai) |
-| **Interactive Demo Guide** | 5–8 Minute Walkthrough & Video Script | [DEMO_GUIDE.md](./DEMO_GUIDE.md) |
-| **Loom Video Walkthrough** | 5–8 Minute Recorded Video Demo | [loom.com/share/invyra-voice-ai-demo](https://www.loom.com/share/invyra-voice-ai-demo) |
 | **System Architecture Blueprint** | High-Resolution Component & Data Flow Diagram | [docs/architecture-diagram.png](./docs/architecture-diagram.png) |
 | **Database Schema & RLS** | Entity-Relationship Diagram, Tables & Constraints | [docs/database-schema.md](./docs/database-schema.md) |
 | **Visual Gallery** | Complete 11-Screenshot Product Tour | [docs/screenshots/](./docs/screenshots/) |

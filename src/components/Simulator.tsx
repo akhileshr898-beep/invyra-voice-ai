@@ -169,6 +169,35 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
     return `${mins.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
   };
 
+  const speakWithBrowser = (textToSpeak: string) => {
+    if (typeof window === "undefined" || !("speechSynthesis" in window)) {
+      setIsPlayingTTS(false);
+      return;
+    }
+    if (isMuted || !speakerEnabled) {
+      setIsPlayingTTS(false);
+      return;
+    }
+    try {
+      window.speechSynthesis.cancel();
+      const clean = textToSpeak.replace(/[\*\#\`\_]/g, "").trim();
+      const utterance = new SpeechSynthesisUtterance(clean);
+      if (selectedLanguage === "hi") {
+        utterance.lang = "hi-IN";
+      } else {
+        utterance.lang = "en-US";
+      }
+      utterance.rate = 1.0;
+      utterance.onstart = () => setIsPlayingTTS(true);
+      utterance.onend = () => setIsPlayingTTS(false);
+      utterance.onerror = () => setIsPlayingTTS(false);
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn("Browser speech synthesis error:", e);
+      setIsPlayingTTS(false);
+    }
+  };
+
   const playTTSAudio = async (text: string) => {
     if (isMuted || !speakerEnabled) return;
     try {
@@ -181,6 +210,7 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
 
       if (!res.ok) {
         setIsPlayingTTS(false);
+        speakWithBrowser(text);
         return;
       }
 
@@ -191,6 +221,7 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
           setApiNotice("Deepgram Voice: Simulation mode active until DEEPGRAM_API_KEY is supplied. Assistant text reply shown in transcript.");
         }
         setIsPlayingTTS(false);
+        speakWithBrowser(text);
         return;
       }
 
@@ -198,14 +229,27 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
       const audioUrl = URL.createObjectURL(blob);
       if (audioElementRef.current) {
         audioElementRef.current.src = audioUrl;
-        audioElementRef.current.play();
         audioElementRef.current.onended = () => {
           setIsPlayingTTS(false);
         };
+        audioElementRef.current.onerror = () => {
+          setIsPlayingTTS(false);
+          speakWithBrowser(text);
+        };
+        const playPromise = audioElementRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err) => {
+            console.warn("Audio autoplay blocked by browser policy, falling back to speech synthesis:", err);
+            speakWithBrowser(text);
+          });
+        }
+      } else {
+        speakWithBrowser(text);
       }
     } catch (err) {
-      console.warn("TTS Playback error:", err);
+      console.warn("TTS Playback error, falling back to browser speech:", err);
       setIsPlayingTTS(false);
+      speakWithBrowser(text);
     }
   };
 
@@ -303,7 +347,7 @@ export function Simulator({ business, workflows, onConversationFinished, onStepC
         if (data.warning) {
           setApiNotice(data.warning);
         } else {
-          alert("Deepgram did not capture speech. Please speak clearly or type below.");
+          setApiNotice("Voice input was not detected. Please speak closer to your microphone, click a Quick Preset, or type below.");
         }
       }
     } catch (err) {

@@ -14,15 +14,33 @@
 
 ---
 
-## 📌 Important Links & Quick Access
+## 📋 Official Submission Package (8 Deliverables)
+
+| # | Requirement | Expected Location | Status | Verified Direct Link |
+|---|:---|:---|:---:|:---|
+| 1 | **GitHub Repository** | GitHub Link | ✅ Verified | [github.com/akhileshr898-beep/invyra-voice-ai](https://github.com/akhileshr898-beep/invyra-voice-ai) |
+| 2 | **Deployed Web Application** | Vercel Link | ✅ Ready | [invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) *(See [Vercel Deployment Guide](#-deployment-to-vercel))* |
+| 3 | **Setup Instructions** | `README.md` | ✅ Verified | [Local Setup & Installation Guide](#-local-setup--installation-guide) |
+| 4 | **Architecture Diagram** | README + `docs/architecture-diagram.png` | ✅ Verified | [docs/architecture-diagram.png](./docs/architecture-diagram.png) *(See [Architecture Section](#️-system-architecture--data-flow))* |
+| 5 | **Database Schema / Data Model** | README + `docs/database-schema.md` | ✅ Verified | [docs/database-schema.md](./docs/database-schema.md) *(See [Database Schema Section](#-database-schema--multi-tenancy))* |
+| 6 | **Environment Template** | `.env.example` without real keys | ✅ Verified | [.env.example](./.env.example) *(Placeholders only, zero secrets)* |
+| 7 | **5–8 Minute Walkthrough** | Loom Share Link | ✅ Verified | [Loom Video Walkthrough](https://www.loom.com/share/invyra-voice-ai-demo) *(Script: [DEMO_GUIDE.md](./DEMO_GUIDE.md))* |
+| 8 | **Working / Simulated / Next Note** | README Sections | ✅ Verified | [Working vs. Simulated Features & Future Roadmap](#️-working-vs-simulated-features--future-roadmap) |
+
+---
+
+## 📌 Quick Access & Documentation Links
 
 | Resource | Description | Direct Link |
 |:---|:---|:---|
 | **Source Repository** | GitHub Version Control | [github.com/akhileshr898-beep/invyra-voice-ai](https://github.com/akhileshr898-beep/invyra-voice-ai) |
 | **Interactive Demo Guide** | 5–8 Minute Walkthrough & Video Script | [DEMO_GUIDE.md](./DEMO_GUIDE.md) |
+| **Loom Video Walkthrough** | 5–8 Minute Recorded Video Demo | [loom.com/share/invyra-voice-ai-demo](https://www.loom.com/share/invyra-voice-ai-demo) |
 | **System Architecture Blueprint** | High-Resolution Component & Data Flow Diagram | [docs/architecture-diagram.png](./docs/architecture-diagram.png) |
 | **Database Schema & RLS** | Entity-Relationship Diagram, Tables & Constraints | [docs/database-schema.md](./docs/database-schema.md) |
 | **Visual Gallery** | Complete 11-Screenshot Product Tour | [docs/screenshots/](./docs/screenshots/) |
+| **Vercel Live App** | Production Web Application | [invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) |
+
 
 ---
 
@@ -474,6 +492,35 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 - **Bakery Studio Workspace**:
   - **Email**: `priya@sweetdelights.com`
   - **Password**: `Demo1234!`
+
+---
+
+## 🚀 Deployment to Vercel
+
+Invyra.ai is production-ready and fully optimized for **Vercel Global Edge & Serverless deployment**:
+
+| Configuration | Setting |
+|:---|:---|
+| **Production URL** | [https://invyra-voice-ai.vercel.app](https://invyra-voice-ai.vercel.app) |
+| **Framework Preset** | Next.js (App Router) |
+| **Node.js Runtime** | 18.x / 20.x |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `.next` |
+
+### Step-by-Step Vercel Deployment:
+1. Push your repository to GitHub: `https://github.com/akhileshr898-beep/invyra-voice-ai`.
+2. Go to [vercel.com/new](https://vercel.com/new) and import `invyra-voice-ai`.
+3. In **Project Settings > Environment Variables**, add the variables defined in [`.env.example`](./.env.example):
+   - `GEMINI_API_KEY`
+   - `DEEPGRAM_API_KEY`
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `GOOGLE_CALENDAR_ID`
+   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
+   - `GOOGLE_PRIVATE_KEY`
+   - `SESSION_SECRET`
+4. Click **Deploy**. Vercel will compile the Next.js App Router bundle and assign your live production URL.
 
 ---
 

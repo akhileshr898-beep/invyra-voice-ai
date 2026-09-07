@@ -1,5 +1,7 @@
 # Invyra.ai – Video Demonstration Walkthrough Guide (5–8 Minutes)
 
+> 🔗 **Loom Video Walkthrough**: [https://www.loom.com/share/invyra-voice-ai-demo](https://www.loom.com/share/invyra-voice-ai-demo) *(Record and replace with your published Loom share link)*
+
 This demonstration guide provides an exact, structured timeline and spoken script outline for the **5–8 minute video walkthrough** (Loom / Screen Recording) of **Invyra.ai**. It demonstrates all required assignment features, real-time Gemini tool calling, Deepgram serverless voice synthesis, multi-tenant isolation, and bilingual capabilities.
 
 ---

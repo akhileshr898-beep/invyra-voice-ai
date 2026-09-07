@@ -6,7 +6,9 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY 
 
 export const isGeminiConfigured = Boolean(
   GEMINI_API_KEY &&
-  !GEMINI_API_KEY.includes("your-gemini-api-key")
+  !GEMINI_API_KEY.toLowerCase().includes("your") &&
+  !GEMINI_API_KEY.toLowerCase().includes("key") &&
+  GEMINI_API_KEY.trim().length > 20
 );
 
 // Define Function Declarations for Gemini Tool Calling

@@ -44,10 +44,11 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error: any) {
-    console.error("TTS Route Error:", error);
-    return NextResponse.json(
-      { error: error.message || "Failed to synthesize speech via Deepgram Aura" },
-      { status: 500 }
-    );
+    console.warn("TTS Route Warning (Falling back to simulated speech):", error.message);
+    return NextResponse.json({
+      warning: error.message || "Deepgram Aura speech synthesis unavailable. Displaying text response.",
+      isSimulated: true,
+      text: "",
+    }, { status: 200 });
   }
 }

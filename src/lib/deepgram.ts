@@ -4,7 +4,9 @@ const DEEPGRAM_API_KEY = process.env.DEEPGRAM_API_KEY || "";
 
 export const isDeepgramConfigured = Boolean(
   DEEPGRAM_API_KEY && 
-  !DEEPGRAM_API_KEY.includes("your-deepgram-api-key")
+  !DEEPGRAM_API_KEY.toLowerCase().includes("your") &&
+  !DEEPGRAM_API_KEY.toLowerCase().includes("key") &&
+  DEEPGRAM_API_KEY.trim().length > 20
 );
 
 function getDeepgramClient() {

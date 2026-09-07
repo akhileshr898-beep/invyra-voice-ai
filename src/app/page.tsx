@@ -2,7 +2,9 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/Navbar";
+import { Sidebar } from "@/components/Sidebar";
+import { Header } from "@/components/Header";
+import { CallLifecycleStepper } from "@/components/CallLifecycleStepper";
 import { Simulator } from "@/components/Simulator";
 import { WorkflowBuilder } from "@/components/WorkflowBuilder";
 import { Dashboard } from "@/components/Dashboard";
@@ -10,16 +12,19 @@ import { CalendarView } from "@/components/CalendarView";
 import { SettingsView } from "@/components/SettingsView";
 import { BusinessProfileModal } from "@/components/BusinessProfileModal";
 import { Business, Workflow, ConversationRecord } from "@/lib/types";
+import { PhoneCall, Users, Heart, Sparkles, Activity } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<"simulator" | "builder" | "dashboard" | "calendar" | "settings">("simulator");
+  const [activeTab, setActiveTab] = useState<"simulator" | "dashboard" | "workflows" | "calendar" | "settings">("simulator");
+  const [simulatorStep, setSimulatorStep] = useState<1 | 2 | 3 | 4 | 5>(3);
   const [currentUser, setCurrentUser] = useState<{ id: string; email: string; owner_name: string } | null>(null);
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [selectedBusiness, setSelectedBusiness] = useState<Business | null>(null);
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [conversations, setConversations] = useState<ConversationRecord[]>([]);
   const [businessModalOpen, setBusinessModalOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Fetch tenant-scoped workflows and conversations for a specific business
@@ -61,12 +66,10 @@ export default function Home() {
       setBusinesses(bizList);
 
       if (bizList.length === 0) {
-        // No businesses registered under this account yet
         router.push("/onboarding");
         return;
       }
 
-      // Select preferred or first business
       const activeBiz = preferredBusinessId 
         ? bizList.find((b) => b.id === preferredBusinessId) || bizList[0]
         : (selectedBusiness ? bizList.find((b) => b.id === selectedBusiness.id) || bizList[0] : meData.current_business || bizList[0]);
@@ -146,67 +149,145 @@ export default function Home() {
 
   if (loading || !selectedBusiness) {
     return (
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-6 text-center">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white flex items-center justify-center animate-bounce mb-3 shadow-lg shadow-indigo-500/30">
+      <div className="min-h-screen bg-[#0a0f1d] text-slate-100 flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center animate-bounce mb-3 shadow-lg shadow-blue-500/30">
           <span className="font-bold text-lg">AI</span>
         </div>
         <h2 className="text-base font-bold text-slate-200">Verifying Session & Loading Invyra Voice AI...</h2>
-        <p className="text-xs text-slate-500 mt-1">Loading tenant-isolated workflows, scheduling tools and voice models</p>
+        <p className="text-xs text-slate-400 mt-1">Loading tenant-isolated workflows, scheduling tools and voice models</p>
       </div>
     );
   }
 
+  const activeWorkflow = workflows.find((w) => w.business_id === selectedBusiness.id) || workflows[0];
+
   return (
-    <div className="min-h-screen bg-transparent text-slate-100 flex flex-col selection:bg-indigo-500 selection:text-white">
-      {/* Top Sticky Header */}
-      <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        businesses={businesses}
-        selectedBusiness={selectedBusiness}
-        onSelectBusiness={handleSelectBusiness}
-        onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
-        onDeleteBusiness={handleBusinessDeleted}
-        currentUser={currentUser}
-        onLogout={handleLogout}
+    <div className="min-h-screen bg-[#f4f6fa] text-slate-900 flex overflow-x-hidden">
+      
+      {/* Left Sidebar Navigation (Matching Reference Design) */}
+      <Sidebar
+        currentTab={activeTab}
+        onSelectTab={setActiveTab}
+        activeBusiness={selectedBusiness}
+        isOpenMobile={mobileMenuOpen}
+        onCloseMobile={() => setMobileMenuOpen(false)}
       />
 
-      {/* Main Tab Content */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-        {activeTab === "simulator" && (
-          <Simulator
-            business={selectedBusiness}
-            workflows={workflows}
-            onConversationFinished={() => fetchBusinessData(selectedBusiness.id)}
-          />
-        )}
+      {/* Main App Workspace */}
+      <div className="flex-1 flex flex-col min-w-0">
+        
+        {/* Top Header Bar (Matching Reference Design) */}
+        <Header
+          businesses={businesses}
+          activeBusiness={selectedBusiness}
+          onSelectBusiness={handleSelectBusiness}
+          onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
+          userEmail={currentUser?.email}
+          onLogout={handleLogout}
+          onToggleMobileMenu={() => setMobileMenuOpen(true)}
+        />
 
-        {activeTab === "builder" && (
-          <WorkflowBuilder
-            business={selectedBusiness}
-            workflows={workflows}
-            onWorkflowSaved={handleWorkflowSaved}
-          />
-        )}
+        {/* Workspace Body */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-7 space-y-5 max-w-[1600px] w-full mx-auto">
+          
+          {/* Subheader: Real-Time Call Progress Stepper */}
+          {activeTab === "simulator" && (
+            <CallLifecycleStepper
+              currentStep={simulatorStep}
+              activeWorkflow={activeWorkflow}
+            />
+          )}
 
-        {activeTab === "dashboard" && (
-          <Dashboard
-            business={selectedBusiness}
-            conversations={conversations}
-            onRefresh={() => fetchBusinessData(selectedBusiness.id)}
-          />
-        )}
+          {/* Active View */}
+          {activeTab === "simulator" && (
+            <Simulator
+              business={selectedBusiness}
+              workflows={workflows}
+              onStepChange={(step) => setSimulatorStep(step)}
+              onConversationFinished={() => fetchBusinessData(selectedBusiness.id)}
+            />
+          )}
 
-        {activeTab === "calendar" && <CalendarView />}
+          {activeTab === "workflows" && (
+            <WorkflowBuilder
+              business={selectedBusiness}
+              workflows={workflows}
+              onWorkflowSaved={handleWorkflowSaved}
+            />
+          )}
 
-        {activeTab === "settings" && (
-          <SettingsView
-            businesses={businesses}
-            onDeleteBusiness={handleBusinessDeleted}
-            onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
-          />
-        )}
-      </main>
+          {activeTab === "dashboard" && (
+            <Dashboard
+              business={selectedBusiness}
+              conversations={conversations}
+              onRefresh={() => fetchBusinessData(selectedBusiness.id)}
+            />
+          )}
+
+          {activeTab === "calendar" && <CalendarView />}
+
+          {activeTab === "settings" && (
+            <SettingsView
+              businesses={businesses}
+              onDeleteBusiness={handleBusinessDeleted}
+              onOpenNewBusinessModal={() => setBusinessModalOpen(true)}
+            />
+          )}
+
+        </main>
+
+        {/* Bottom Trust Banner (Matching Reference Design Footer) */}
+        <footer className="bg-white border-t border-slate-200/90 py-3.5 px-6 mt-auto">
+          <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+            
+            {/* Left: Purpose Statement */}
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                <Activity className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="font-extrabold text-slate-800 text-xs sm:text-sm">
+                  Voice AI for a More Responsive Practice
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  Capture every opportunity. Deliver exceptional care.
+                </div>
+              </div>
+            </div>
+
+            {/* Center: Metric Pills */}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-semibold">
+                <PhoneCall className="w-3 h-3 text-emerald-500" />
+                <span>Fewer Missed Calls</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-semibold">
+                <Users className="w-3 h-3 text-blue-500" />
+                <span>More Appointments</span>
+              </div>
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-semibold">
+                <Heart className="w-3 h-3 text-indigo-500" />
+                <span>Happier Patients</span>
+              </div>
+            </div>
+
+            {/* Right: Invyra.ai Signature */}
+            <div className="flex items-center gap-2 font-bold text-slate-800">
+              <div className="w-6 h-6 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-2xs">
+                <div className="flex items-center gap-0.5">
+                  <span className="w-0.5 h-2 bg-white rounded-full"></span>
+                  <span className="w-0.5 h-3.5 bg-white rounded-full"></span>
+                  <span className="w-0.5 h-1.5 bg-white rounded-full"></span>
+                </div>
+              </div>
+              <span className="font-extrabold">Invyra<span className="text-blue-600">.ai</span></span>
+              <span className="text-slate-400 font-normal text-[11px]">&bull; Voice AI Assistant</span>
+            </div>
+
+          </div>
+        </footer>
+
+      </div>
 
       {/* Business Profile Creation Modal */}
       <BusinessProfileModal
@@ -215,15 +296,6 @@ export default function Home() {
         onCreated={handleBusinessCreated}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/70 backdrop-blur-xl py-4 px-6 text-center text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span className="font-medium text-slate-300">Invyra Voice AI &bull; Autonomous Enterprise Voice Receptionist</span>
-          <span className="text-[11px] text-slate-500">
-            Next.js &bull; Serverless Functions &bull; Deepgram (Nova-2 & Aura) &bull; Gemini 1.5 Tool Calling &bull; Google Calendar &bull; Multi-Tenant Isolation
-          </span>
-        </div>
-      </footer>
     </div>
   );
 }
